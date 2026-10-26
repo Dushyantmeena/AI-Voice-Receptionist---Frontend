@@ -1,0 +1,153 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  @include thin-scrollbar;
+}
+
+.table {
+  width: 100%;
+  min-width: 680px;
+  font-size: $text-base;
+
+  th,
+  td {
+    padding: $space-3 $space-5;
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: $surface-muted;
+    border-bottom: 1px solid $border;
+    font-size: $text-xs;
+    font-weight: $weight-semibold;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: $text-muted;
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid $border;
+    transition: background-color $duration-fast $ease-standard;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background-color: $surface-muted;
+    }
+  }
+
+  td {
+    color: $text-primary;
+  }
+
+  &__cell--actions {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  &__cell--strong {
+    font-weight: $weight-medium;
+  }
+
+  &__cell--muted {
+    color: $text-muted;
+  }
+
+  &__empty {
+    padding: $space-12 $space-5;
+    text-align: center;
+  }
+}
+
+.table-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  justify-content: flex-end;
+}
+
+// ─── Mobile card layout ──────────────────────────────────────────────────────
+// Tables remain horizontally scrollable; this gives an alternative for
+// narrow screens on records where scanning columns is impractical.
+.record-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.record-list__item {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  padding: $space-4 $space-5;
+  border-bottom: 1px solid $border;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.record-list__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: $space-3;
+  font-size: $text-sm;
+}
+
+.record-list__label {
+  color: $text-muted;
+}
+
+// ─── Pagination ──────────────────────────────────────────────────────────────
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: $space-3;
+  padding: $space-3 $space-5;
+  border-top: 1px solid $border;
+  font-size: $text-sm;
+  color: $text-muted;
+}
+
+.pagination__controls {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.pagination__page {
+  min-width: 88px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+// ─── Toolbar ─────────────────────────────────────────────────────────────────
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  flex-wrap: wrap;
+  padding: $space-4 $space-5;
+  border-bottom: 1px solid $border;
+}
+
+.toolbar__spacer {
+  flex: 1 1 auto;
+}
+
+.toolbar__select {
+  min-width: 150px;
+  max-width: 190px;
+}

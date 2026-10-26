@@ -1,0 +1,123 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: $z-modal;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+  background-color: rgba(11, 18, 32, 0.5);
+  backdrop-filter: blur(2px);
+  animation: fade-in $duration-fast $ease-standard;
+  overflow-y: auto;
+
+  @include up($bp-md) {
+    align-items: center;
+    padding: $space-6;
+  }
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 92vh;
+  background-color: $surface;
+  border-radius: $radius-xl $radius-xl 0 0;
+  box-shadow: $shadow-lg;
+  animation: slide-up $duration-base $ease-out;
+
+  @include up($bp-md) {
+    max-width: 560px;
+    border-radius: $radius-xl;
+    max-height: 86vh;
+  }
+
+  &--lg {
+    @include up($bp-md) {
+      max-width: 760px;
+    }
+  }
+}
+
+.modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $space-4;
+  padding: $space-5 $space-6;
+  border-bottom: 1px solid $border;
+}
+
+.modal__title {
+  font-size: $text-lg;
+  font-weight: $weight-semibold;
+  color: $text-primary;
+}
+
+.modal__description {
+  margin-top: $space-1;
+  font-size: $text-sm;
+  color: $text-muted;
+}
+
+.modal__body {
+  padding: $space-5 $space-6;
+  overflow-y: auto;
+  @include thin-scrollbar;
+}
+
+.modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: $space-3;
+  padding: $space-4 $space-6;
+  border-top: 1px solid $border;
+  background-color: $surface-muted;
+  border-radius: 0 0 $radius-xl $radius-xl;
+
+  @include down($bp-md) {
+    border-radius: 0;
+  }
+}
+
+.modal__close {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-md;
+  color: $ink-400;
+  flex-shrink: 0;
+  transition:
+    background-color $duration-fast $ease-standard,
+    color $duration-fast $ease-standard;
+
+  &:hover {
+    background-color: $ink-50;
+    color: $ink-700;
+  }
+
+  @include focus-visible;
+}
+
+// ─── Confirmation dialog ─────────────────────────────────────────────────────
+.confirm-dialog__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: $danger-50;
+  color: $danger-600;
+  margin-bottom: $space-3;
+}
+
+.confirm-dialog__icon--warning {
+  background-color: $warning-50;
+  color: $warning-600;
+}

@@ -1,0 +1,164 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  height: 22px;
+  padding: 0 $space-2;
+  border-radius: $radius-pill;
+  font-size: $text-xs;
+  font-weight: $weight-medium;
+  white-space: nowrap;
+  border: 1px solid transparent;
+
+  &::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: currentColor;
+    flex-shrink: 0;
+  }
+
+  &--no-dot::before {
+    display: none;
+  }
+}
+
+.badge--neutral {
+  background-color: $ink-50;
+  border-color: $border;
+  color: $ink-500;
+}
+
+.badge--brand {
+  background-color: $brand-50;
+  border-color: $brand-100;
+  color: $brand-700;
+}
+
+.badge--success {
+  background-color: $success-50;
+  border-color: #bbf7d0;
+  color: $success-600;
+}
+
+.badge--warning {
+  background-color: $warning-50;
+  border-color: #fde68a;
+  color: $warning-600;
+}
+
+.badge--danger {
+  background-color: $danger-50;
+  border-color: #fecaca;
+  color: $danger-600;
+}
+
+.badge--info {
+  background-color: $info-50;
+  border-color: #bfdbfe;
+  color: $info-600;
+}
+
+// ─── Status dot ──────────────────────────────────────────────────────────────
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: $ink-300;
+
+  &--live {
+    background-color: $success-500;
+    animation: pulse-dot 1.8s ease-in-out infinite;
+  }
+
+  &--idle {
+    background-color: $ink-300;
+  }
+
+  &--warning {
+    background-color: $warning-500;
+  }
+
+  &--danger {
+    background-color: $danger-500;
+  }
+}
+
+// ─── Avatar ──────────────────────────────────────────────────────────────────
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background-color: $brand-100;
+  color: $brand-700;
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
+  flex-shrink: 0;
+  overflow: hidden;
+
+  &--sm {
+    width: 28px;
+    height: 28px;
+    font-size: $text-xs;
+  }
+
+  &--lg {
+    width: 44px;
+    height: 44px;
+    font-size: $text-md;
+  }
+}
+
+.avatar--inverse {
+  background-color: rgba(99, 102, 241, 0.22);
+  color: #c7ccff;
+}
+
+// ─── Tabs ────────────────────────────────────────────────────────────────────
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+  border-bottom: 1px solid $border;
+  overflow-x: auto;
+  @include thin-scrollbar;
+}
+
+.tabs__tab {
+  position: relative;
+  padding: $space-3 $space-4;
+  font-size: $text-base;
+  font-weight: $weight-medium;
+  color: $text-muted;
+  border-radius: $radius-sm $radius-sm 0 0;
+  white-space: nowrap;
+  transition: color $duration-fast $ease-standard;
+
+  &:hover {
+    color: $text-primary;
+    background-color: $surface-muted;
+  }
+
+  &[aria-selected="true"] {
+    color: $brand-600;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset-inline: $space-3;
+      bottom: -1px;
+      height: 2px;
+      background-color: $brand-600;
+      border-radius: $radius-pill;
+    }
+  }
+
+  @include focus-visible;
+}

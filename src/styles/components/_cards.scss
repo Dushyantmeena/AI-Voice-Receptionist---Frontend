@@ -1,0 +1,173 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.card {
+  @include card-surface;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.card--padded {
+  padding: $space-5;
+
+  @include up($bp-md) {
+    padding: $space-6;
+  }
+}
+
+.card--interactive {
+  transition:
+    border-color $duration-base $ease-standard,
+    box-shadow $duration-base $ease-standard,
+    transform $duration-base $ease-standard;
+
+  &:hover {
+    border-color: $border-strong;
+    box-shadow: $shadow-md;
+    transform: translateY(-1px);
+  }
+}
+
+.card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $space-4;
+  padding: $space-5 $space-5 $space-3;
+  border-bottom: 1px solid $border;
+
+  @include up($bp-md) {
+    padding: $space-5 $space-6 $space-3;
+  }
+}
+
+.card__title {
+  font-size: $text-md;
+  font-weight: $weight-semibold;
+  color: $text-primary;
+}
+
+.card__subtitle {
+  margin-top: $space-1;
+  font-size: $text-sm;
+  color: $text-muted;
+}
+
+.card__body {
+  padding: $space-5;
+
+  @include up($bp-md) {
+    padding: $space-6;
+  }
+}
+
+.card__body--flush {
+  padding: 0;
+}
+
+.card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: $space-3;
+  padding: $space-4 $space-5;
+  border-top: 1px solid $border;
+  background-color: $surface-muted;
+  border-radius: 0 0 $radius-lg $radius-lg;
+}
+
+// ─── Stat card ───────────────────────────────────────────────────────────────
+.stat-card {
+  @include card-surface;
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  padding: $space-5;
+  min-width: 0;
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-3;
+  }
+
+  &__label {
+    font-size: $text-sm;
+    font-weight: $weight-medium;
+    color: $text-muted;
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: $radius-md;
+    background-color: $brand-50;
+    color: $brand-600;
+    flex-shrink: 0;
+  }
+
+  &__value {
+    font-size: $text-3xl;
+    font-weight: $weight-semibold;
+    letter-spacing: -0.02em;
+    color: $text-primary;
+    line-height: 1.1;
+  }
+
+  &__meta {
+    font-size: $text-xs;
+    color: $text-muted;
+  }
+
+  &--success &__icon {
+    background-color: $success-50;
+    color: $success-600;
+  }
+
+  &--warning &__icon {
+    background-color: $warning-50;
+    color: $warning-600;
+  }
+
+  &--info &__icon {
+    background-color: $info-50;
+    color: $info-600;
+  }
+}
+
+// ─── Definition list ─────────────────────────────────────────────────────────
+.detail-list {
+  display: grid;
+  gap: $space-4;
+
+  @include up($bp-md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  &--single {
+    grid-template-columns: 1fr;
+  }
+}
+
+.detail-list__item {
+  min-width: 0;
+}
+
+.detail-list__label {
+  font-size: $text-xs;
+  font-weight: $weight-medium;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: $text-muted;
+}
+
+.detail-list__value {
+  margin-top: $space-1;
+  font-size: $text-md;
+  color: $text-primary;
+  overflow-wrap: anywhere;
+}

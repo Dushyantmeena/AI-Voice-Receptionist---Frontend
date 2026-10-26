@@ -1,0 +1,94 @@
+@use "variables" as *;
+
+// ─── Responsive helpers ──────────────────────────────────────────────────────
+// Mobile-first: base styles target small screens, `up()` scales them upward.
+@mixin up($breakpoint) {
+  @media (min-width: $breakpoint) {
+    @content;
+  }
+}
+
+@mixin down($breakpoint) {
+  @media (max-width: ($breakpoint - 0.02px)) {
+    @content;
+  }
+}
+
+// ─── Focus ───────────────────────────────────────────────────────────────────
+@mixin focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: $shadow-focus;
+}
+
+@mixin focus-visible {
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+// ─── Text ────────────────────────────────────────────────────────────────────
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin line-clamp($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// ─── Surfaces ────────────────────────────────────────────────────────────────
+@mixin card-surface {
+  background-color: $surface;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-xs;
+}
+
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// ─── Scrollbars ──────────────────────────────────────────────────────────────
+@mixin thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: $ink-200 transparent;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $ink-200;
+    border-radius: $radius-pill;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+}
+
+// ─── Skeleton shimmer ────────────────────────────────────────────────────────
+@mixin shimmer {
+  background: linear-gradient(
+    90deg,
+    $ink-100 25%,
+    $ink-50 37%,
+    $ink-100 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}

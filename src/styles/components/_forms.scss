@@ -1,0 +1,206 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  min-width: 0;
+}
+
+.field__label {
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+  font-size: $text-sm;
+  font-weight: $weight-medium;
+  color: $ink-700;
+}
+
+.field__required {
+  color: $danger-500;
+}
+
+.field__hint {
+  font-size: $text-xs;
+  color: $text-muted;
+}
+
+.field__error {
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+  font-size: $text-xs;
+  color: $danger-600;
+}
+
+// ─── Controls ────────────────────────────────────────────────────────────────
+.input,
+.select,
+.textarea {
+  width: 100%;
+  min-height: 38px;
+  padding: $space-2 $space-3;
+  background-color: $surface;
+  border: 1px solid $border-strong;
+  border-radius: $radius-md;
+  font-size: $text-base;
+  color: $text-primary;
+  transition:
+    border-color $duration-fast $ease-standard,
+    box-shadow $duration-fast $ease-standard;
+
+  &::placeholder {
+    color: $ink-300;
+  }
+
+  &:hover:not(:disabled) {
+    border-color: $ink-300;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $brand-500;
+    box-shadow: $shadow-focus;
+  }
+
+  &:disabled {
+    background-color: $ink-50;
+    color: $text-muted;
+    cursor: not-allowed;
+  }
+
+  &[aria-invalid="true"] {
+    border-color: $danger-500;
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+    }
+  }
+}
+
+.textarea {
+  min-height: 88px;
+  resize: vertical;
+  line-height: $leading-relaxed;
+}
+
+.select {
+  appearance: none;
+  padding-right: $space-8;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $space-3 center;
+  cursor: pointer;
+}
+
+// ─── Checkbox / switch ───────────────────────────────────────────────────────
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $text-base;
+  color: $ink-700;
+  cursor: pointer;
+
+  input {
+    width: 16px;
+    height: 16px;
+    accent-color: $brand-600;
+    cursor: pointer;
+  }
+}
+
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-3;
+  cursor: pointer;
+  font-size: $text-base;
+  color: $ink-700;
+
+  input {
+    @include visually-hidden;
+  }
+}
+
+.switch__track {
+  position: relative;
+  width: 38px;
+  height: 22px;
+  border-radius: $radius-pill;
+  background-color: $ink-200;
+  transition: background-color $duration-base $ease-standard;
+  flex-shrink: 0;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #fff;
+    box-shadow: $shadow-xs;
+    transition: transform $duration-base $ease-standard;
+  }
+}
+
+.switch input:checked + .switch__track {
+  background-color: $brand-600;
+
+  &::after {
+    transform: translateX(16px);
+  }
+}
+
+.switch input:focus-visible + .switch__track {
+  @include focus-ring;
+}
+
+// ─── Form layout ─────────────────────────────────────────────────────────────
+.form-grid {
+  display: grid;
+  gap: $space-4;
+  grid-template-columns: 1fr;
+
+  @include up($bp-md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.form-grid__full {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: $space-3;
+  padding-top: $space-2;
+}
+
+// ─── Search ──────────────────────────────────────────────────────────────────
+.search-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+
+  svg {
+    position: absolute;
+    left: $space-3;
+    color: $ink-400;
+    pointer-events: none;
+  }
+
+  .input {
+    padding-left: $space-10;
+  }
+}
+
+.search-input--grow {
+  flex: 1 1 240px;
+}

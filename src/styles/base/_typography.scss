@@ -1,0 +1,59 @@
+@use "../abstracts/variables" as *;
+
+body {
+  font-family: $font-body;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: $text-primary;
+  font-weight: $weight-semibold;
+  line-height: $leading-tight;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: $text-2xl;
+}
+
+h2 {
+  font-size: $text-xl;
+}
+
+h3 {
+  font-size: $text-lg;
+}
+
+h4 {
+  font-size: $text-md;
+}
+
+p {
+  color: $text-secondary;
+}
+
+small {
+  font-size: $text-xs;
+}
+
+strong {
+  font-weight: $weight-semibold;
+}
+
+code,
+kbd {
+  font-family: $font-mono;
+  font-size: 0.8125em;
+  background-color: $surface-sunken;
+  border-radius: $radius-xs;
+  padding: 0.1em 0.35em;
+}
+
+::selection {
+  background-color: $brand-200;
+  color: $brand-900;
+}

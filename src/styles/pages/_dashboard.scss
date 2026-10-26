@@ -1,0 +1,443 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+// ─── Dashboard grids ─────────────────────────────────────────────────────────
+.stat-grid {
+  display: grid;
+  gap: $space-4;
+  grid-template-columns: 1fr;
+
+  @include up($bp-sm) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @include up($bp-xl) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.split {
+  display: grid;
+  gap: $space-6;
+  grid-template-columns: 1fr;
+  align-items: start;
+
+  @include up($bp-lg) {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+}
+
+.split--even {
+  @include up($bp-lg) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+// ─── Table person cell ───────────────────────────────────────────────────────
+.table-person {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  min-width: 0;
+}
+
+.table-person__body {
+  min-width: 0;
+}
+
+.table-person__name {
+  font-weight: $weight-medium;
+  color: $text-primary;
+  @include truncate;
+}
+
+.table-person__meta {
+  font-size: $text-xs;
+  color: $text-muted;
+  @include truncate;
+}
+
+.table-timestamp {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+.table-timestamp__range {
+  font-size: $text-xs;
+  color: $text-muted;
+}
+
+// ─── Choice list (checkbox groups) ──────────────────────────────────────────
+.choice-list {
+  display: grid;
+  gap: $space-2;
+  margin-top: $space-3;
+  padding: $space-3;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  background-color: $surface-muted;
+
+  @include up($bp-md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+// ─── Chat link card ─────────────────────────────────────────────────────────
+.chat-link {
+  gap: $space-3;
+}
+
+.chat-link__head {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+}
+
+.chat-link__icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: $radius-md;
+  background-color: $brand-50;
+  color: $brand-600;
+  flex-shrink: 0;
+}
+
+.chat-link__value {
+  padding: $space-2 $space-3;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  background-color: $surface-sunken;
+  min-width: 0;
+}
+
+.chat-link__code {
+  display: block;
+  font-family: $font-mono;
+  font-size: $text-xs;
+  color: $ink-600;
+}
+
+.chat-link__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.chat-link__note {
+  font-size: $text-xs;
+  line-height: $leading-relaxed;
+  color: $text-muted;
+}
+
+// ─── Conversation detail ────────────────────────────────────────────────────
+.conversation-meta {
+  display: grid;
+  gap: $space-3;
+  padding: $space-4;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  background-color: $surface-muted;
+
+  @include up($bp-md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.conversation-meta__item {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  min-width: 0;
+}
+
+.conversation-meta__icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: $radius-sm;
+  background-color: $surface;
+  border: 1px solid $border;
+  color: $ink-500;
+  flex-shrink: 0;
+}
+
+.conversation-meta__label {
+  font-size: $text-xs;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: $text-muted;
+}
+
+.conversation-meta__value {
+  font-size: $text-sm;
+  color: $text-primary;
+  overflow-wrap: anywhere;
+}
+
+.transcript {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.transcript-panel {
+  margin-top: $space-3;
+  max-height: 420px;
+  overflow-y: auto;
+  padding: $space-4;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  background-color: $surface-muted;
+  @include thin-scrollbar;
+}
+
+.transcript-reply {
+  margin-top: $space-3;
+  padding: $space-4;
+  border: 1px solid $border;
+  border-left: 3px solid $brand-500;
+  border-radius: $radius-md;
+  background-color: $surface;
+  font-size: $text-sm;
+  line-height: $leading-relaxed;
+  color: $text-secondary;
+  white-space: pre-wrap;
+}
+
+// ─── Weekly schedule editor (staff self-service) ────────────────────────────
+.schedule-editor {
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  background-color: $surface;
+}
+
+.schedule-row {
+  display: grid;
+  gap: $space-3;
+  padding: $space-4;
+  border-bottom: 1px solid $border;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  @include up($bp-md) {
+    grid-template-columns: 130px minmax(0, 1fr) auto;
+    align-items: center;
+  }
+}
+
+.schedule-row__day {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
+  color: $text-primary;
+
+  svg {
+    color: $ink-400;
+  }
+}
+
+.schedule-row__slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  min-width: 0;
+}
+
+.schedule-row__closed {
+  font-size: $text-sm;
+  color: $text-muted;
+}
+
+.schedule-slot {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  padding: $space-1;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  background-color: $surface-muted;
+}
+
+.schedule-slot__time {
+  width: 108px;
+  min-height: 32px;
+  padding: $space-1 $space-2;
+  font-size: $text-sm;
+  background-color: $surface;
+}
+
+.schedule-slot__dash {
+  color: $text-muted;
+}
+
+.schedule-slot__remove {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: $radius-sm;
+  color: $ink-400;
+
+  &:hover {
+    background-color: $danger-50;
+    color: $danger-600;
+  }
+
+  @include focus-visible;
+}
+
+// ─── Availability summary ───────────────────────────────────────────────────
+.availability-summary {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.availability-summary__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: $space-3;
+  font-size: $text-sm;
+}
+
+.availability-summary__day {
+  color: $text-muted;
+  min-width: 84px;
+}
+
+.availability-summary__ranges {
+  color: $text-primary;
+  text-align: right;
+}
+
+// ─── Admin availability panel ───────────────────────────────────────────────
+.availability-toolbar {
+  max-width: 340px;
+}
+
+.availability-week {
+  display: grid;
+  gap: $space-3;
+  grid-template-columns: 1fr;
+
+  @include up($bp-md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @include up($bp-xl) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.availability-day {
+  padding: $space-4;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  background-color: $surface;
+
+  &--empty {
+    background-color: $surface-muted;
+    border-style: dashed;
+  }
+}
+
+.availability-day__name {
+  font-size: $text-xs;
+  font-weight: $weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $text-muted;
+}
+
+.availability-day__closed {
+  margin-top: $space-2;
+  font-size: $text-sm;
+  color: $ink-400;
+}
+
+.availability-day__list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  margin-top: $space-3;
+}
+
+.availability-day__slot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+  padding: $space-1 $space-2;
+  border-radius: $radius-sm;
+  background-color: $brand-50;
+  font-size: $text-sm;
+  color: $brand-700;
+  font-variant-numeric: tabular-nums;
+}
+
+.availability-day__remove {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: $radius-xs;
+  color: $brand-600;
+
+  &:hover {
+    background-color: $danger-50;
+    color: $danger-600;
+  }
+
+  @include focus-visible;
+}
+
+.availability-add {
+  display: grid;
+  gap: $space-3;
+  align-items: end;
+  grid-template-columns: 1fr;
+
+  @include up($bp-md) {
+    grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 1fr)) auto;
+  }
+}
+
+// ─── Misc dashboard helpers ─────────────────────────────────────────────────
+.panel-head {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  margin-bottom: $space-4;
+}
+
+.inline-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-1;
+}
+
+.muted-block {
+  padding: $space-4;
+  border: 1px dashed $border-strong;
+  border-radius: $radius-md;
+  background-color: $surface-muted;
+  font-size: $text-sm;
+  color: $text-muted;
+}
+
+.detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}

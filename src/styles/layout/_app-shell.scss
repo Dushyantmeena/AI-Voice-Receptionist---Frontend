@@ -1,0 +1,450 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  background-color: $surface-muted;
+}
+
+// ─── Sidebar ─────────────────────────────────────────────────────────────────
+.sidebar {
+  position: fixed;
+  inset-block: 0;
+  left: 0;
+  z-index: $z-sidebar;
+  display: flex;
+  flex-direction: column;
+  width: $sidebar-width;
+  background-color: $surface-inverse;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  transform: translateX(-100%);
+  transition: transform $duration-slow $ease-out;
+  @include thin-scrollbar;
+
+  &--open {
+    transform: translateX(0);
+  }
+
+  @include up($bp-lg) {
+    transform: translateX(0);
+  }
+}
+
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  height: $topbar-height;
+  padding: 0 $space-5;
+  flex-shrink: 0;
+}
+
+.sidebar__logo {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: $radius-md;
+  background: linear-gradient(135deg, $brand-500, $violet-600);
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.sidebar__brand-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.sidebar__brand-name {
+  font-size: $text-base;
+  font-weight: $weight-semibold;
+  color: $text-inverse;
+  letter-spacing: -0.01em;
+  @include truncate;
+}
+
+.sidebar__brand-meta {
+  font-size: 11px;
+  color: $text-inverse-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.sidebar__nav {
+  flex: 1;
+  padding: $space-3;
+  overflow-y: auto;
+}
+
+.sidebar__section {
+  margin-bottom: $space-5;
+}
+
+.sidebar__section-label {
+  padding: $space-2 $space-3;
+  font-size: 10px;
+  font-weight: $weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #64748b;
+}
+
+.sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-2 $space-3;
+  margin-bottom: 2px;
+  border-radius: $radius-md;
+  font-size: $text-base;
+  font-weight: $weight-medium;
+  color: #a8b3c7;
+  transition:
+    background-color $duration-fast $ease-standard,
+    color $duration-fast $ease-standard;
+
+  svg {
+    flex-shrink: 0;
+    color: #7c8aa3;
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    color: $text-inverse;
+
+    svg {
+      color: #c3ccdc;
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid $brand-400;
+    outline-offset: -2px;
+  }
+
+  &--active {
+    background-color: rgba(99, 102, 241, 0.16);
+    color: #fff;
+
+    svg {
+      color: $brand-300;
+    }
+
+    &:hover {
+      background-color: rgba(99, 102, 241, 0.22);
+    }
+  }
+}
+
+.sidebar__footer {
+  padding: $space-3;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.sidebar__tenant {
+  padding: $space-3;
+  border-radius: $radius-md;
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.sidebar__tenant-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #64748b;
+}
+
+.sidebar__tenant-name {
+  margin-top: 2px;
+  font-size: $text-sm;
+  font-weight: $weight-medium;
+  color: $text-inverse;
+  @include truncate;
+}
+
+// ─── Backdrop (mobile) ───────────────────────────────────────────────────────
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: $z-overlay;
+  background-color: rgba(11, 18, 32, 0.45);
+  animation: fade-in $duration-fast $ease-standard;
+
+  @include up($bp-lg) {
+    display: none;
+  }
+}
+
+// ─── Main column ─────────────────────────────────────────────────────────────
+.app-shell__main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+
+  @include up($bp-lg) {
+    margin-left: $sidebar-width;
+  }
+}
+
+// ─── Topbar ──────────────────────────────────────────────────────────────────
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: $z-sticky;
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  height: $topbar-height;
+  padding: 0 $space-4;
+  background-color: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid $border;
+
+  @include up($bp-md) {
+    padding: 0 $space-6;
+  }
+}
+
+.topbar__menu {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-md;
+  color: $ink-600;
+  flex-shrink: 0;
+
+  &:hover {
+    background-color: $ink-50;
+  }
+
+  @include up($bp-lg) {
+    display: none;
+  }
+}
+
+.topbar__breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  min-width: 0;
+  font-size: $text-sm;
+  color: $text-muted;
+
+  &-current {
+    font-weight: $weight-medium;
+    color: $text-primary;
+    @include truncate;
+  }
+
+  svg {
+    color: $ink-300;
+    flex-shrink: 0;
+  }
+}
+
+.topbar__spacer {
+  flex: 1 1 auto;
+}
+
+.topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.topbar__role {
+  display: none;
+
+  @include up($bp-sm) {
+    display: inline-flex;
+  }
+}
+
+// ─── User menu ───────────────────────────────────────────────────────────────
+.user-menu {
+  position: relative;
+}
+
+.user-menu__trigger {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-1 $space-2;
+  border-radius: $radius-md;
+  transition: background-color $duration-fast $ease-standard;
+
+  &:hover {
+    background-color: $ink-50;
+  }
+
+  @include focus-visible;
+}
+
+.user-menu__meta {
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+
+  @include up($bp-md) {
+    display: flex;
+  }
+}
+
+.user-menu__name {
+  font-size: $text-sm;
+  font-weight: $weight-medium;
+  color: $text-primary;
+  max-width: 150px;
+  @include truncate;
+}
+
+.user-menu__role {
+  font-size: 11px;
+  color: $text-muted;
+}
+
+.user-menu__panel {
+  position: absolute;
+  top: calc(100% + #{$space-2});
+  right: 0;
+  z-index: $z-overlay;
+  width: 232px;
+  padding: $space-2;
+  background-color: $surface;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-lg;
+  animation: slide-up $duration-fast $ease-out;
+}
+
+.user-menu__header {
+  padding: $space-2 $space-3 $space-3;
+  border-bottom: 1px solid $border;
+  margin-bottom: $space-2;
+}
+
+.user-menu__email {
+  font-size: $text-xs;
+  color: $text-muted;
+  overflow-wrap: anywhere;
+}
+
+.user-menu__item {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  width: 100%;
+  padding: $space-2 $space-3;
+  border-radius: $radius-sm;
+  font-size: $text-base;
+  color: $ink-600;
+  text-align: left;
+
+  &:hover {
+    background-color: $ink-50;
+    color: $ink-800;
+  }
+
+  &--danger {
+    color: $danger-600;
+
+    &:hover {
+      background-color: $danger-50;
+      color: $danger-600;
+    }
+  }
+
+  @include focus-visible;
+}
+
+// ─── Page frame ──────────────────────────────────────────────────────────────
+.page {
+  flex: 1;
+  width: 100%;
+  max-width: $content-max;
+  margin-inline: auto;
+  padding: $space-5 $space-4 $space-12;
+  animation: fade-in $duration-base $ease-standard;
+
+  @include up($bp-md) {
+    padding: $space-6 $space-6 $space-12;
+  }
+
+  @include up($bp-lg) {
+    padding: $space-8 $page-gutter $space-16;
+  }
+}
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  margin-bottom: $space-5;
+
+  @include up($bp-md) {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $space-6;
+    margin-bottom: $space-6;
+  }
+}
+
+.page-header__text {
+  min-width: 0;
+}
+
+.page-header__eyebrow {
+  font-size: $text-xs;
+  font-weight: $weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $brand-600;
+  margin-bottom: $space-2;
+}
+
+.page-header__title {
+  font-size: $text-2xl;
+  font-weight: $weight-semibold;
+  letter-spacing: -0.02em;
+  color: $text-primary;
+}
+
+.page-header__description {
+  margin-top: $space-1;
+  max-width: 68ch;
+  font-size: $text-base;
+  color: $text-muted;
+}
+
+.page-header__actions {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+// ─── Section spacing ─────────────────────────────────────────────────────────
+.section {
+  margin-top: $space-6;
+}
+
+.section__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+  margin-bottom: $space-3;
+}
+
+.section__title {
+  font-size: $text-md;
+  font-weight: $weight-semibold;
+  color: $text-primary;
+}

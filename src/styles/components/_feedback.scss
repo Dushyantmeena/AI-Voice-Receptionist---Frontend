@@ -1,0 +1,252 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+// ─── Spinner ─────────────────────────────────────────────────────────────────
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid $ink-200;
+  border-top-color: $brand-600;
+  border-radius: 50%;
+  animation: spin 700ms linear infinite;
+
+  &--sm {
+    width: 14px;
+    height: 14px;
+    border-width: 2px;
+  }
+
+  &--lg {
+    width: 32px;
+    height: 32px;
+    border-width: 3px;
+  }
+}
+
+.spinner-center {
+  display: grid;
+  place-items: center;
+  padding: $space-12 $space-4;
+}
+
+// ─── Skeleton ────────────────────────────────────────────────────────────────
+.skeleton {
+  @include shimmer;
+  border-radius: $radius-sm;
+  min-height: 12px;
+  width: 100%;
+
+  &--text {
+    height: 12px;
+  }
+
+  &--title {
+    height: 20px;
+    width: 40%;
+  }
+
+  &--circle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+  }
+
+  &--block {
+    height: 88px;
+    border-radius: $radius-md;
+  }
+
+  &--row {
+    height: 44px;
+    border-radius: $radius-sm;
+  }
+}
+
+.skeleton-table {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  padding: $space-5;
+}
+
+// ─── Empty / error states ────────────────────────────────────────────────────
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: $space-3;
+  padding: $space-12 $space-6;
+}
+
+.state__icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: $radius-lg;
+  background-color: $surface-sunken;
+  color: $ink-400;
+}
+
+.state__title {
+  font-size: $text-md;
+  font-weight: $weight-semibold;
+  color: $text-primary;
+}
+
+.state__message {
+  max-width: 42ch;
+  font-size: $text-sm;
+  color: $text-muted;
+}
+
+.state__actions {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  margin-top: $space-2;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.state--error .state__icon {
+  background-color: $danger-50;
+  color: $danger-600;
+}
+
+// ─── Inline alert ────────────────────────────────────────────────────────────
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  font-size: $text-sm;
+  background-color: $surface-muted;
+  color: $ink-600;
+
+  svg {
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+}
+
+.alert--error {
+  background-color: $danger-50;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+.alert--warning {
+  background-color: $warning-50;
+  border-color: #fde68a;
+  color: #92400e;
+}
+
+.alert--info {
+  background-color: $info-50;
+  border-color: #bfdbfe;
+  color: #1e40af;
+}
+
+.alert--success {
+  background-color: $success-50;
+  border-color: #bbf7d0;
+  color: #065f46;
+}
+
+.alert__title {
+  font-weight: $weight-semibold;
+}
+
+.alert__body {
+  color: inherit;
+  opacity: 0.9;
+}
+
+// ─── Toasts ──────────────────────────────────────────────────────────────────
+.toast-region {
+  position: fixed;
+  bottom: $space-5;
+  right: $space-5;
+  z-index: $z-toast;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  width: min(360px, calc(100vw - #{$space-10}));
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  background-color: $surface;
+  border: 1px solid $border;
+  border-left-width: 3px;
+  border-radius: $radius-md;
+  box-shadow: $shadow-lg;
+  animation: slide-up $duration-base $ease-out;
+  pointer-events: auto;
+
+  &--success {
+    border-left-color: $success-500;
+
+    .toast__icon {
+      color: $success-600;
+    }
+  }
+
+  &--error {
+    border-left-color: $danger-500;
+
+    .toast__icon {
+      color: $danger-600;
+    }
+  }
+
+  &--info {
+    border-left-color: $info-500;
+
+    .toast__icon {
+      color: $info-600;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  &__title {
+    font-size: $text-sm;
+    font-weight: $weight-semibold;
+    color: $text-primary;
+  }
+
+  &__message {
+    font-size: $text-sm;
+    color: $text-secondary;
+    overflow-wrap: anywhere;
+  }
+
+  &__close {
+    color: $ink-400;
+    line-height: 1;
+    padding: $space-1;
+    border-radius: $radius-xs;
+
+    &:hover {
+      color: $ink-600;
+      background-color: $ink-50;
+    }
+  }
+}

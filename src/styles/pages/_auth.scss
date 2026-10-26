@@ -1,0 +1,228 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.auth-layout {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: 1fr;
+
+  @include up($bp-lg) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+// ─── Brand panel ─────────────────────────────────────────────────────────────
+.auth-layout__aside {
+  position: relative;
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: $space-10;
+  background-color: $surface-inverse;
+  color: $text-inverse;
+  overflow: hidden;
+
+  @include up($bp-lg) {
+    display: flex;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -160px;
+    right: -120px;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.38), transparent 68%);
+    pointer-events: none;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -180px;
+    left: -140px;
+    width: 460px;
+    height: 460px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.24), transparent 70%);
+    pointer-events: none;
+  }
+}
+
+.auth-layout__aside-content {
+  position: relative;
+  z-index: 1;
+  max-width: 42ch;
+}
+
+.auth-layout__brand {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-layout__headline {
+  margin-top: $space-8;
+  font-size: $text-4xl;
+  font-weight: $weight-semibold;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+
+.auth-layout__lede {
+  margin-top: $space-4;
+  font-size: $text-md;
+  line-height: $leading-relaxed;
+  color: $text-inverse-muted;
+}
+
+.auth-layout__points {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  margin-top: $space-10;
+}
+
+.auth-layout__point {
+  display: flex;
+  gap: $space-3;
+  align-items: flex-start;
+
+  &-icon {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: $radius-md;
+    background-color: rgba(255, 255, 255, 0.07);
+    color: $brand-300;
+    flex-shrink: 0;
+  }
+
+  &-title {
+    font-size: $text-base;
+    font-weight: $weight-medium;
+    color: #fff;
+  }
+
+  &-text {
+    font-size: $text-sm;
+    color: $text-inverse-muted;
+    line-height: $leading-relaxed;
+  }
+}
+
+.auth-layout__footer {
+  position: relative;
+  z-index: 1;
+  font-size: $text-xs;
+  color: #64748b;
+}
+
+// ─── Form panel ──────────────────────────────────────────────────────────────
+.auth-layout__main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: $space-8 $space-4;
+
+  @include up($bp-md) {
+    padding: $space-10;
+  }
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  margin-inline: auto;
+}
+
+.auth-card__mobile-brand {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  margin-bottom: $space-6;
+  font-weight: $weight-semibold;
+  color: $text-primary;
+
+  @include up($bp-lg) {
+    display: none;
+  }
+}
+
+.auth-card__title {
+  font-size: $text-2xl;
+  font-weight: $weight-semibold;
+  letter-spacing: -0.02em;
+}
+
+.auth-card__subtitle {
+  margin-top: $space-2;
+  margin-bottom: $space-6;
+  font-size: $text-base;
+  color: $text-muted;
+}
+
+.auth-card__form {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.auth-card__hint {
+  margin-top: $space-6;
+  padding: $space-3 $space-4;
+  border: 1px dashed $border-strong;
+  border-radius: $radius-md;
+  font-size: $text-xs;
+  color: $text-muted;
+  line-height: $leading-relaxed;
+}
+
+// ─── Simple centred page (401 / 404) ─────────────────────────────────────────
+.status-page {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: $space-6;
+  background-color: $surface-muted;
+}
+
+.status-page__inner {
+  width: 100%;
+  max-width: 460px;
+  text-align: center;
+}
+
+.status-page__code {
+  font-size: 4rem;
+  font-weight: $weight-bold;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: $brand-600;
+}
+
+.status-page__title {
+  margin-top: $space-3;
+  font-size: $text-xl;
+  font-weight: $weight-semibold;
+}
+
+.status-page__text {
+  margin-top: $space-2;
+  margin-bottom: $space-6;
+  font-size: $text-base;
+  color: $text-muted;
+}
+
+.status-page__actions {
+  display: flex;
+  justify-content: center;
+  gap: $space-3;
+  flex-wrap: wrap;
+}
