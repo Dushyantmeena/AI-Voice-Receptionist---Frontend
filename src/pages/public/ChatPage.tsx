@@ -1,19 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
-import {
-  ArrowLeft,
-  AudioLines,
-  CalendarCheck2,
-  Info,
-  RotateCcw,
-  Send,
-  ShieldCheck,
-  Sparkles,
-} from "lucide-react";
+import { ArrowLeft, RotateCcw, Send } from "lucide-react";
 import { chatService } from "@/services/chatService";
 import { getErrorMessage } from "@/api/apiError";
 import { ToolResultCard } from "@/features/chat/ToolResultCard";
 import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
 import { PATHS } from "@/routes/paths";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import type { ExecutedTool } from "@/types/domain";
@@ -203,11 +195,11 @@ export default function ChatPage() {
       <aside className="chat-rail">
         <div className="chat-rail__brand">
           <span className="chat-rail__logo" aria-hidden="true">
-            <AudioLines size={19} />
+            <Icon name="mic" size={19} />
           </span>
           <div>
             <p className="chat-rail__name">{displayName}</p>
-            <p className="chat-rail__industry">AI receptionist</p>
+            <p className="chat-rail__industry">Booking assistant</p>
           </div>
         </div>
 
@@ -216,15 +208,15 @@ export default function ChatPage() {
           <div className="chat-rail__list">
             <div className="chat-rail__item">
               <span>Browse services and prices</span>
-              <Sparkles size={14} aria-hidden="true" />
+              <Icon name="briefcase-business" size={14} />
             </div>
             <div className="chat-rail__item">
               <span>Find an open slot</span>
-              <CalendarCheck2 size={14} aria-hidden="true" />
+              <Icon name="calendar-days" size={14} />
             </div>
             <div className="chat-rail__item">
               <span>Book, move or cancel</span>
-              <RotateCcw size={14} aria-hidden="true" />
+              <Icon name="messages-square" size={14} />
             </div>
           </div>
         </div>
@@ -263,7 +255,10 @@ export default function ChatPage() {
           <div className="chat-surface__title">
             <p className="chat-surface__name">
               {displayName}
-              <ShieldCheck size={14} color="#0f9d58" aria-hidden="true" />
+              <span className="chat-surface__badge">
+                <Icon name="circle-check" size={10} />
+                Live
+              </span>
             </p>
             <p className="chat-surface__status">
               <span className={isSending ? "status-dot status-dot--warning" : "status-dot status-dot--live"} aria-hidden="true" />
@@ -286,17 +281,28 @@ export default function ChatPage() {
 
         <div className="chat-surface__messages" ref={messagesRef}>
           {entries.length === 0 && !isRestoring ? (
-            <div className="tool-card tool-card--info">
-              <div className="tool-card__head">
-                <Info size={14} aria-hidden="true" />
-                Start of conversation
-              </div>
-              <div className="tool-card__body">
-                <p className="feature-card__title">Ask about services, times or an existing booking</p>
-                <p className="feature-card__text">
-                  This receptionist answers from the business&apos;s live records. Bookings made here are
-                  real appointments — the team will see them immediately.
-                </p>
+            <div className="chat-intro">
+              <span className="chat-intro__mark" aria-hidden="true">
+                <Icon name="mic" size={22} />
+              </span>
+              <h2 className="chat-intro__title">Ask about services, times or an existing booking</h2>
+              <p className="chat-intro__text">
+                This receptionist answers from the business&apos;s live records. Bookings made here are
+                real appointments — the team will see them immediately.
+              </p>
+              <div className="chat-intro__points">
+                <span className="chat-intro__point">
+                  <Icon name="briefcase-business" size={12} />
+                  Service catalogue
+                </span>
+                <span className="chat-intro__point">
+                  <Icon name="calendar-days" size={12} />
+                  Live availability
+                </span>
+                <span className="chat-intro__point">
+                  <Icon name="clock" size={12} />
+                  Instant confirmation
+                </span>
               </div>
             </div>
           ) : null}
@@ -324,7 +330,7 @@ export default function ChatPage() {
                   className={`msg__avatar msg__avatar--${isUser ? "user" : "ai"}`}
                   aria-hidden="true"
                 >
-                  {isUser ? "You" : <AudioLines size={14} />}
+                  {isUser ? "You" : <Icon name="bot" size={15} />}
                 </span>
                 <div className="msg__content">
                   <div className={`msg__bubble msg__bubble--${isUser ? "user" : "ai"}`}>
@@ -352,7 +358,7 @@ export default function ChatPage() {
           {isSending ? (
             <div className="msg">
               <span className="msg__avatar msg__avatar--ai" aria-hidden="true">
-                <AudioLines size={14} />
+                <Icon name="bot" size={15} />
               </span>
               <div className="msg__content">
                 <div className="typing" aria-label="Receptionist is typing">

@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { ArrowRight, AudioLines, CalendarCheck2, MessagesSquare, ShieldCheck } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { ROLE_HOME } from "@/constants/domain";
 import { PATHS } from "@/routes/paths";
@@ -11,6 +11,7 @@ import { getErrorMessage } from "@/api/apiError";
 import { Button } from "@/components/ui/Button";
 import { Field, Input } from "@/components/ui/Field";
 import { Alert } from "@/components/ui/Feedback";
+import { Icon } from "@/components/ui/Icon";
 
 const loginSchema = z.object({
   email: z.string().trim().min(1, "Email is required").email("Enter a valid email address"),
@@ -21,17 +22,17 @@ type LoginValues = z.infer<typeof loginSchema>;
 
 const PLATFORM_POINTS = [
   {
-    icon: MessagesSquare,
+    asset: "messages-square",
     title: "Conversational front desk",
     text: "The AI receptionist answers, checks availability and books appointments using your real service catalogue.",
   },
   {
-    icon: CalendarCheck2,
+    asset: "calendar-days",
     title: "One shared calendar",
     text: "Every booking the agent makes lands in the same appointment book your team already works from.",
   },
   {
-    icon: ShieldCheck,
+    asset: "user-round-cog",
     title: "Role-based workspaces",
     text: "Platform owners, business administrators and staff each see exactly the data their role allows.",
   },
@@ -71,12 +72,13 @@ export default function LoginPage() {
     <div className="auth-layout">
       <aside className="auth-layout__aside">
         <div className="auth-layout__brand">
-          <span className="sidebar__logo" aria-hidden="true">
-            <AudioLines size={17} />
+          <span className="auth-layout__brand-mark" aria-hidden="true">
+            <Icon name="mic" size={17} />
           </span>
-          <span className="sidebar__brand-text">
-            <span className="sidebar__brand-name">AI Voice Receptionist</span>
-            <span className="sidebar__brand-meta">Operations console</span>
+          <span>
+            <span className="auth-layout__brand-name">AI Voice Receptionist</span>
+            <br />
+            <span className="auth-layout__brand-meta">Operations console</span>
           </span>
         </div>
 
@@ -84,7 +86,7 @@ export default function LoginPage() {
           <h1 className="auth-layout__headline">
             Every call answered.
             <br />
-            Every booking recorded.
+            Every booking <em>recorded</em>.
           </h1>
           <p className="auth-layout__lede">
             Sign in to manage your business, your team&apos;s schedule and the conversations your AI
@@ -92,20 +94,17 @@ export default function LoginPage() {
           </p>
 
           <div className="auth-layout__points">
-            {PLATFORM_POINTS.map((point) => {
-              const Icon = point.icon;
-              return (
-                <div className="auth-layout__point" key={point.title}>
-                  <span className="auth-layout__point-icon">
-                    <Icon size={15} aria-hidden="true" />
-                  </span>
-                  <div>
-                    <p className="auth-layout__point-title">{point.title}</p>
-                    <p className="auth-layout__point-text">{point.text}</p>
-                  </div>
+            {PLATFORM_POINTS.map((point) => (
+              <div className="auth-layout__point" key={point.title}>
+                <span className="auth-layout__point-icon" aria-hidden="true">
+                  <Icon name={point.asset} size={15} />
+                </span>
+                <div>
+                  <p className="auth-layout__point-title">{point.title}</p>
+                  <p className="auth-layout__point-text">{point.text}</p>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
 
@@ -115,8 +114,8 @@ export default function LoginPage() {
       <div className="auth-layout__main">
         <div className="auth-card">
           <Link className="auth-card__mobile-brand" to={PATHS.home}>
-            <span className="sidebar__logo" style={{ width: 26, height: 26 }} aria-hidden="true">
-              <AudioLines size={14} />
+            <span className="public-nav__mark" aria-hidden="true">
+              <Icon name="mic" size={15} />
             </span>
             Voice Receptionist
           </Link>
@@ -127,7 +126,11 @@ export default function LoginPage() {
           </p>
 
           <form className="auth-card__form" onSubmit={handleSubmit(onSubmit)} noValidate>
-            {formError ? <Alert tone="error" title="Sign-in failed">{formError}</Alert> : null}
+            {formError ? (
+              <Alert tone="error" title="Sign-in failed">
+                {formError}
+              </Alert>
+            ) : null}
 
             <Field label="Email address" htmlFor="email" required error={errors.email?.message}>
               <Input
@@ -162,7 +165,7 @@ export default function LoginPage() {
             staff logins are issued by a business administrator.
           </p>
 
-          <p className="section text-sm text-muted text-center">
+          <p className="auth-card__foot">
             <Link className="btn-link" to={PATHS.home}>
               Back to the public site
             </Link>

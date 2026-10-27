@@ -1,24 +1,11 @@
-import {
-  Building2,
-  CalendarDays,
-  Clock3,
-  Contact,
-  KeyRound,
-  LayoutDashboard,
-  MessagesSquare,
-  Scissors,
-  Settings,
-  UserCog,
-  Users,
-  type LucideIcon,
-} from "lucide-react";
 import type { Role } from "@/types/domain";
 import { PATHS } from "@/routes/paths";
 
 export interface NavItem {
   label: string;
   to: string;
-  icon: LucideIcon;
+  /** File name (without extension) of the SVG in `src/assets`. */
+  asset: string;
   /** Match the path exactly (used for dashboard roots). */
   end?: boolean;
 }
@@ -33,10 +20,10 @@ export const NAV_BY_ROLE: Record<Role, NavSection[]> = {
     {
       label: "Platform",
       items: [
-        { label: "Overview", to: PATHS.admin, icon: LayoutDashboard, end: true },
-        { label: "Businesses", to: PATHS.adminBusinesses, icon: Building2 },
-        { label: "Conversations", to: PATHS.adminConversations, icon: MessagesSquare },
-        { label: "User access", to: PATHS.adminAccess, icon: KeyRound },
+        { label: "Overview", to: PATHS.admin, asset: "layout-dashboard", end: true },
+        { label: "Businesses", to: PATHS.adminBusinesses, asset: "building-complex" },
+        { label: "Conversations", to: PATHS.adminConversations, asset: "messages-square" },
+        { label: "User access", to: PATHS.adminAccess, asset: "user-round-cog" },
       ],
     },
   ],
@@ -44,33 +31,35 @@ export const NAV_BY_ROLE: Record<Role, NavSection[]> = {
     {
       label: "Operations",
       items: [
-        { label: "Overview", to: PATHS.dashboard, icon: LayoutDashboard, end: true },
-        { label: "Appointments", to: PATHS.appointments, icon: CalendarDays },
-        { label: "AI conversations", to: PATHS.conversations, icon: MessagesSquare },
+        { label: "Overview", to: PATHS.dashboard, asset: "layout-dashboard", end: true },
+        { label: "Appointments", to: PATHS.appointments, asset: "calendar-days" },
+        { label: "AI conversations", to: PATHS.conversations, asset: "messages-square" },
       ],
     },
     {
       label: "Manage",
       items: [
-        { label: "Staff", to: PATHS.staffDirectory, icon: Users },
-        { label: "Services", to: PATHS.services, icon: Scissors },
-        { label: "Customers", to: PATHS.customers, icon: Contact },
-        { label: "Availability", to: PATHS.availability, icon: Clock3 },
+        { label: "Staff", to: PATHS.staffDirectory, asset: "users" },
+        { label: "Services", to: PATHS.services, asset: "briefcase-business" },
+        { label: "Customers", to: PATHS.customers, asset: "circle-user-round" },
+        { label: "Availability", to: PATHS.availability, asset: "clock" },
       ],
     },
     {
       label: "Workspace",
-      items: [{ label: "Business profile", to: PATHS.businessProfile, icon: Settings }],
+      items: [
+        { label: "Business profile", to: PATHS.businessProfile, asset: "columns-3-cog" },
+      ],
     },
   ],
   STAFF: [
     {
       label: "My workspace",
       items: [
-        { label: "Overview", to: PATHS.staff, icon: LayoutDashboard, end: true },
-        { label: "My appointments", to: PATHS.staffAppointments, icon: CalendarDays },
-        { label: "My schedule", to: PATHS.staffSchedule, icon: Clock3 },
-        { label: "Profile", to: PATHS.staffProfile, icon: UserCog },
+        { label: "Overview", to: PATHS.staff, asset: "layout-dashboard", end: true },
+        { label: "My appointments", to: PATHS.staffAppointments, asset: "calendar-days" },
+        { label: "My schedule", to: PATHS.staffSchedule, asset: "clock" },
+        { label: "Profile", to: PATHS.staffProfile, asset: "circle-user-round" },
       ],
     },
   ],
@@ -80,7 +69,9 @@ export const NAV_BY_ROLE: Record<Role, NavSection[]> = {
 export function findNavItem(role: Role, pathname: string): NavItem | null {
   const items = NAV_BY_ROLE[role].flatMap((section) => section.items);
   const matches = items
-    .filter((item) => (item.end ? pathname === item.to : pathname === item.to || pathname.startsWith(`${item.to}/`)))
+    .filter((item) =>
+      item.end ? pathname === item.to : pathname === item.to || pathname.startsWith(`${item.to}/`),
+    )
     .sort((a, b) => b.to.length - a.to.length);
   return matches[0] ?? null;
 }

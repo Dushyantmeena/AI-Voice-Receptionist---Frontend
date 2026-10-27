@@ -41,12 +41,33 @@
   overflow: hidden;
 }
 
+// Small uppercase label used above values, in card headers and over tables.
+@mixin eyebrow {
+  font-size: $text-xs;
+  font-weight: $weight-semibold;
+  letter-spacing: $tracking-wide;
+  text-transform: uppercase;
+  color: $text-3;
+}
+
 // ─── Surfaces ────────────────────────────────────────────────────────────────
+// The canonical panel: a hairline-lit sheet that sits above the canvas.
+@mixin panel($radius: $radius-lg) {
+  background-color: $surface-1;
+  border: 1px solid $line;
+  border-radius: $radius;
+  box-shadow: $shadow-sm;
+}
+
+// ─── Legacy alias ────────────────────────────────────────────────────────────
 @mixin card-surface {
-  background-color: $surface;
-  border: 1px solid $border;
-  border-radius: $radius-lg;
-  box-shadow: $shadow-xs;
+  @include panel;
+}
+
+// Frosted bar for sticky headers over scrolling content.
+@mixin glass-bar {
+  background-color: rgba(8, 10, 16, 0.78);
+  backdrop-filter: blur(18px) saturate(140%);
 }
 
 @mixin visually-hidden {
@@ -64,7 +85,7 @@
 // ─── Scrollbars ──────────────────────────────────────────────────────────────
 @mixin thin-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: $ink-200 transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.14) transparent;
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -72,8 +93,12 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: $ink-200;
+    background-color: rgba(255, 255, 255, 0.14);
     border-radius: $radius-pill;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.22);
+    }
   }
 
   &::-webkit-scrollbar-track {
@@ -85,10 +110,28 @@
 @mixin shimmer {
   background: linear-gradient(
     90deg,
-    $ink-100 25%,
-    $ink-50 37%,
-    $ink-100 63%
+    rgba(255, 255, 255, 0.04) 25%,
+    rgba(255, 255, 255, 0.085) 37%,
+    rgba(255, 255, 255, 0.04) 63%
   );
   background-size: 400% 100%;
-  animation: shimmer 1.4s ease-in-out infinite;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+// ─── Decorative ──────────────────────────────────────────────────────────────
+// A faint dotted grid used behind hero and auth panels.
+@mixin dot-grid($size: 26px, $alpha: 0.055) {
+  background-image: radial-gradient(rgba(255, 255, 255, $alpha) 1px, transparent 1px);
+  background-size: $size $size;
+}
+
+// A single soft light source; used once per page at most.
+@mixin aurora-glow($color: rgba(201, 247, 91, 0.16), $size: 520px) {
+  content: "";
+  position: absolute;
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  background: radial-gradient(circle, $color, transparent 68%);
+  pointer-events: none;
 }

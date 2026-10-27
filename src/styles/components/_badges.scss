@@ -1,15 +1,17 @@
 @use "../abstracts/variables" as *;
 @use "../abstracts/mixins" as *;
 
+// ─── Status pill ─────────────────────────────────────────────────────────────
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: $space-1;
-  height: 22px;
-  padding: 0 $space-2;
+  gap: $space-2;
+  height: 24px;
+  padding: 0 $space-3;
   border-radius: $radius-pill;
   font-size: $text-xs;
   font-weight: $weight-medium;
+  letter-spacing: 0.01em;
   white-space: nowrap;
   border: 1px solid transparent;
 
@@ -19,73 +21,89 @@
     height: 5px;
     border-radius: 50%;
     background-color: currentColor;
+    box-shadow: 0 0 0 3px currentColor;
+    opacity: 0.85;
     flex-shrink: 0;
   }
 
-  &--no-dot::before {
-    display: none;
+  &--no-dot {
+    padding-inline: $space-2 $space-3;
+
+    &::before {
+      display: none;
+    }
   }
 }
 
 .badge--neutral {
-  background-color: $ink-50;
-  border-color: $border;
-  color: $ink-500;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: $line;
+  color: $text-2;
 }
 
 .badge--brand {
-  background-color: $brand-50;
-  border-color: $brand-100;
-  color: $brand-700;
+  background-color: $accent-soft;
+  border-color: $accent-line;
+  color: $accent;
 }
 
 .badge--success {
-  background-color: $success-50;
-  border-color: #bbf7d0;
-  color: $success-600;
+  background-color: $success-bg;
+  border-color: $success-line;
+  color: $success-text;
 }
 
 .badge--warning {
-  background-color: $warning-50;
-  border-color: #fde68a;
-  color: $warning-600;
+  background-color: $warning-bg;
+  border-color: $warning-line;
+  color: $warning-text;
 }
 
 .badge--danger {
-  background-color: $danger-50;
-  border-color: #fecaca;
-  color: $danger-600;
+  background-color: $danger-bg;
+  border-color: $danger-line;
+  color: $danger-text;
 }
 
 .badge--info {
-  background-color: $info-50;
-  border-color: #bfdbfe;
-  color: $info-600;
+  background-color: $info-bg;
+  border-color: $info-line;
+  color: $info-text;
+}
+
+// `box-shadow: 0 0 0 3px currentColor` above reads as a glow; tone it down so
+// it stays a halo rather than a solid ring.
+.badge::before {
+  box-shadow: none;
 }
 
 // ─── Status dot ──────────────────────────────────────────────────────────────
 .status-dot {
   display: inline-block;
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background-color: $ink-300;
+  background-color: $text-4;
+  flex-shrink: 0;
 
   &--live {
-    background-color: $success-500;
-    animation: pulse-dot 1.8s ease-in-out infinite;
+    background-color: $mint;
+    box-shadow: 0 0 0 3px rgba(110, 231, 183, 0.16);
+    animation: pulse-dot 2s ease-in-out infinite;
   }
 
   &--idle {
-    background-color: $ink-300;
+    background-color: $text-4;
   }
 
   &--warning {
-    background-color: $warning-500;
+    background-color: $amber;
+    box-shadow: 0 0 0 3px rgba(245, 200, 107, 0.14);
   }
 
   &--danger {
-    background-color: $danger-500;
+    background-color: $rose;
+    box-shadow: 0 0 0 3px rgba(255, 133, 145, 0.14);
   }
 }
 
@@ -96,12 +114,15 @@
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background-color: $brand-100;
-  color: $brand-700;
+  background-color: $surface-3;
+  border: 1px solid $line-strong;
+  color: $text-1;
   font-size: $text-sm;
   font-weight: $weight-semibold;
+  letter-spacing: 0.01em;
   flex-shrink: 0;
   overflow: hidden;
+  user-select: none;
 
   &--sm {
     width: 28px;
@@ -110,15 +131,16 @@
   }
 
   &--lg {
-    width: 44px;
-    height: 44px;
+    width: 46px;
+    height: 46px;
     font-size: $text-md;
   }
 }
 
 .avatar--inverse {
-  background-color: rgba(99, 102, 241, 0.22);
-  color: #c7ccff;
+  background-color: $accent-soft-strong;
+  border-color: $accent-line;
+  color: $accent;
 }
 
 // ─── Tabs ────────────────────────────────────────────────────────────────────
@@ -126,37 +148,40 @@
   display: flex;
   align-items: center;
   gap: $space-1;
-  border-bottom: 1px solid $border;
+  border-bottom: 1px solid $line;
   overflow-x: auto;
   @include thin-scrollbar;
 }
 
 .tabs__tab {
   position: relative;
-  padding: $space-3 $space-4;
+  padding: $space-3 $space-3;
   font-size: $text-base;
   font-weight: $weight-medium;
-  color: $text-muted;
+  color: $text-3;
   border-radius: $radius-sm $radius-sm 0 0;
   white-space: nowrap;
-  transition: color $duration-fast $ease-standard;
+  transition:
+    color $duration-fast $ease-standard,
+    background-color $duration-fast $ease-standard;
 
   &:hover {
-    color: $text-primary;
-    background-color: $surface-muted;
+    color: $text-1;
+    background-color: rgba(255, 255, 255, 0.03);
   }
 
   &[aria-selected="true"] {
-    color: $brand-600;
+    color: $text-1;
 
     &::after {
       content: "";
       position: absolute;
-      inset-inline: $space-3;
+      inset-inline: $space-2;
       bottom: -1px;
       height: 2px;
-      background-color: $brand-600;
+      background-color: $accent;
       border-radius: $radius-pill;
+      box-shadow: 0 0 12px rgba(201, 247, 91, 0.5);
     }
   }
 

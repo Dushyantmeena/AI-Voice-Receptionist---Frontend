@@ -5,8 +5,8 @@
 .spinner {
   width: 20px;
   height: 20px;
-  border: 2px solid $ink-200;
-  border-top-color: $brand-600;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-top-color: $accent;
   border-radius: 50%;
   animation: spin 700ms linear infinite;
 
@@ -82,23 +82,37 @@
 .state__icon {
   display: grid;
   place-items: center;
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: $radius-lg;
-  background-color: $surface-sunken;
-  color: $ink-400;
+  background-color: $surface-2;
+  border: 1px solid $line;
+  color: $text-2;
+  margin-bottom: $space-1;
 }
 
 .state__title {
   font-size: $text-md;
   font-weight: $weight-semibold;
-  color: $text-primary;
+  letter-spacing: $tracking-tight;
+  color: $text-1;
 }
 
 .state__message {
-  max-width: 42ch;
+  max-width: 46ch;
   font-size: $text-sm;
-  color: $text-muted;
+  line-height: $leading-normal;
+  color: $text-3;
+
+  code {
+    display: inline-block;
+    padding: 2px $space-2;
+    border-radius: $radius-xs;
+    background-color: $surface-3;
+    border: 1px solid $line;
+    font-size: $text-xs;
+    color: $text-2;
+  }
 }
 
 .state__actions {
@@ -111,8 +125,9 @@
 }
 
 .state--error .state__icon {
-  background-color: $danger-50;
-  color: $danger-600;
+  background-color: $danger-bg;
+  border-color: $danger-line;
+  color: $danger-text;
 }
 
 // ─── Inline alert ────────────────────────────────────────────────────────────
@@ -121,11 +136,12 @@
   align-items: flex-start;
   gap: $space-3;
   padding: $space-3 $space-4;
-  border: 1px solid $border;
+  border: 1px solid $line;
   border-radius: $radius-md;
   font-size: $text-sm;
-  background-color: $surface-muted;
-  color: $ink-600;
+  line-height: $leading-normal;
+  background-color: $surface-2;
+  color: $text-2;
 
   svg {
     flex-shrink: 0;
@@ -134,36 +150,37 @@
 }
 
 .alert--error {
-  background-color: $danger-50;
-  border-color: #fecaca;
-  color: #991b1b;
+  background-color: $danger-bg;
+  border-color: $danger-line;
+  color: $danger-text;
 }
 
 .alert--warning {
-  background-color: $warning-50;
-  border-color: #fde68a;
-  color: #92400e;
+  background-color: $warning-bg;
+  border-color: $warning-line;
+  color: $warning-text;
 }
 
 .alert--info {
-  background-color: $info-50;
-  border-color: #bfdbfe;
-  color: #1e40af;
+  background-color: $info-bg;
+  border-color: $info-line;
+  color: $info-text;
 }
 
 .alert--success {
-  background-color: $success-50;
-  border-color: #bbf7d0;
-  color: #065f46;
+  background-color: $success-bg;
+  border-color: $success-line;
+  color: $success-text;
 }
 
 .alert__title {
   font-weight: $weight-semibold;
+  color: $text-1;
 }
 
 .alert__body {
   color: inherit;
-  opacity: 0.9;
+  opacity: 0.92;
 }
 
 // ─── Toasts ──────────────────────────────────────────────────────────────────
@@ -175,7 +192,7 @@
   display: flex;
   flex-direction: column;
   gap: $space-2;
-  width: min(360px, calc(100vw - #{$space-10}));
+  width: min(380px, calc(100vw - #{$space-10}));
   pointer-events: none;
 }
 
@@ -183,36 +200,36 @@
   display: flex;
   align-items: flex-start;
   gap: $space-3;
-  padding: $space-3 $space-4;
-  background-color: $surface;
-  border: 1px solid $border;
-  border-left-width: 3px;
+  padding: $space-4;
+  background-color: rgba(20, 24, 34, 0.92);
+  backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid $line-strong;
   border-radius: $radius-md;
   box-shadow: $shadow-lg;
   animation: slide-up $duration-base $ease-out;
   pointer-events: auto;
 
   &--success {
-    border-left-color: $success-500;
+    border-left: 2px solid $mint;
 
     .toast__icon {
-      color: $success-600;
+      color: $success-text;
     }
   }
 
   &--error {
-    border-left-color: $danger-500;
+    border-left: 2px solid $rose;
 
     .toast__icon {
-      color: $danger-600;
+      color: $danger-text;
     }
   }
 
   &--info {
-    border-left-color: $info-500;
+    border-left: 2px solid $iris;
 
     .toast__icon {
-      color: $info-600;
+      color: $info-text;
     }
   }
 
@@ -229,24 +246,37 @@
   &__title {
     font-size: $text-sm;
     font-weight: $weight-semibold;
-    color: $text-primary;
+    color: $text-1;
   }
 
   &__message {
     font-size: $text-sm;
-    color: $text-secondary;
+    line-height: $leading-snug;
+    color: $text-2;
     overflow-wrap: anywhere;
   }
 
   &__close {
-    color: $ink-400;
+    color: $text-3;
     line-height: 1;
     padding: $space-1;
     border-radius: $radius-xs;
+    transition:
+      color $duration-fast $ease-standard,
+      background-color $duration-fast $ease-standard;
 
     &:hover {
-      color: $ink-600;
-      background-color: $ink-50;
+      color: $text-1;
+      background-color: rgba(255, 255, 255, 0.06);
     }
+  }
+}
+
+@include down($bp-sm) {
+  .toast-region {
+    left: $space-4;
+    right: $space-4;
+    bottom: $space-4;
+    width: auto;
   }
 }

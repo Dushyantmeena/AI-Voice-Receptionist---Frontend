@@ -108,14 +108,14 @@ export default function StaffProfilePage() {
               <div className="detail-list__item">
                 <p className="detail-list__label">Account email</p>
                 <p className="detail-list__value row">
-                  <Mail size={14} aria-hidden="true" color="#64748b" />
+                  <Mail size={14} aria-hidden="true" className="text-muted" />
                   {user?.email ?? "—"}
                 </p>
               </div>
               <div className="detail-list__item">
                 <p className="detail-list__label">Business</p>
                 <p className="detail-list__value row">
-                  <Briefcase size={14} aria-hidden="true" color="#64748b" />
+                  <Briefcase size={14} aria-hidden="true" className="text-muted" />
                   {staff.business?.name ?? user?.business?.name ?? "—"}
                 </p>
               </div>
@@ -176,7 +176,7 @@ export default function StaffProfilePage() {
         <div className="stack stack--loose">
           <div className="card card--padded">
             <div className="row">
-              <IdCard size={16} aria-hidden="true" color="#64748b" />
+              <IdCard size={16} aria-hidden="true" className="text-muted" />
               <p className="card__title">Services I perform</p>
             </div>
             <p className="card__subtitle">
@@ -208,7 +208,7 @@ export default function StaffProfilePage() {
           <div className="card card--padded">
             <div className="row row--between row--wrap">
               <div className="row">
-                <Clock3 size={16} aria-hidden="true" color="#64748b" />
+                <Clock3 size={16} aria-hidden="true" className="text-muted" />
                 <p className="card__title">Weekly hours</p>
               </div>
               <Link className="btn btn--ghost btn--sm" to={PATHS.staffSchedule}>
@@ -230,7 +230,7 @@ export default function StaffProfilePage() {
 
           <div className="card card--padded">
             <div className="row">
-              <ShieldCheck size={16} aria-hidden="true" color="#64748b" />
+              <ShieldCheck size={16} aria-hidden="true" className="text-muted" />
               <p className="card__title">Access level</p>
             </div>
             <p className="card__subtitle">What this account is allowed to do.</p>

@@ -1,12 +1,9 @@
 @use "../abstracts/variables" as *;
 @use "../abstracts/mixins" as *;
 
-:root {
-  color-scheme: light;
-}
-
 #root {
   min-height: 100vh;
+  isolation: isolate;
 }
 
 // ─── Accessibility ───────────────────────────────────────────────────────────
@@ -20,10 +17,11 @@
   left: $space-2;
   z-index: $z-toast;
   padding: $space-2 $space-4;
-  background-color: $brand-600;
-  color: #fff;
+  background-color: $accent;
+  color: $accent-ink;
   border-radius: $radius-sm;
-  transform: translateY(-200%);
+  font-weight: $weight-semibold;
+  transform: translateY(-240%);
   transition: transform $duration-fast $ease-standard;
 
   &:focus {
@@ -47,6 +45,12 @@
   display: flex;
   flex-direction: column;
   gap: $space-4;
+  min-width: 0;
+
+  // A wide table inside a card must scroll inside the card, never widen the page.
+  > * {
+    min-width: 0;
+  }
 }
 
 .stack--tight {
@@ -75,6 +79,11 @@
   display: grid;
   gap: $space-5;
   grid-template-columns: 1fr;
+  min-width: 0;
+
+  > * {
+    min-width: 0;
+  }
 }
 
 @include up($bp-md) {
@@ -95,11 +104,27 @@
 
 // ─── Text helpers ────────────────────────────────────────────────────────────
 .text-muted {
-  color: $text-muted;
+  color: $text-3;
 }
 
 .text-secondary {
-  color: $text-secondary;
+  color: $text-2;
+}
+
+.text-success {
+  color: $success-text;
+}
+
+.text-warning {
+  color: $warning-text;
+}
+
+.text-danger {
+  color: $danger-text;
+}
+
+.text-accent {
+  color: $accent;
 }
 
 .text-sm {
@@ -113,6 +138,7 @@
 .text-mono {
   font-family: $font-mono;
   font-size: $text-xs;
+  letter-spacing: -0.01em;
 }
 
 .text-center {
@@ -129,6 +155,11 @@
 
 .nowrap {
   white-space: nowrap;
+}
+
+// Small uppercase section label.
+.eyebrow {
+  @include eyebrow;
 }
 
 // ─── Keyframes ───────────────────────────────────────────────────────────────
@@ -161,12 +192,24 @@
 @keyframes slide-up {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(10px);
   }
 
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
@@ -178,7 +221,17 @@
   }
 
   50% {
-    opacity: 0.4;
-    transform: scale(0.85);
+    opacity: 0.35;
+    transform: scale(0.8);
+  }
+}
+
+@keyframes marquee-y {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-50%);
   }
 }

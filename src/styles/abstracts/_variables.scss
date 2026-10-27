@@ -1,94 +1,157 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Design tokens
+// Design tokens — "Aurora Ink"
 //
-// Every visual value used by the application resolves back to this file.
-// Components must not hard-code colours, spacing or radii.
+// A dark, editorial SaaS surface for a voice-AI product. Everything visual
+// resolves back to this file: components must not hard-code colours, spacing,
+// radii or shadows.
+//
+// Rules of the system:
+//   · near-black canvas, never pure #000 (keeps depth on OLED and IPS alike)
+//   · surfaces step up in 4 small increments, separated by hairlines
+//   · one signature accent (signal lime) used only where action or focus lives
+//   · support hues are desaturated and tinted, never neon
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Brand — indigo → violet, signalling an AI product without being playful.
-$brand-50: #eef0ff;
-$brand-100: #e0e3ff;
-$brand-200: #c7ccff;
-$brand-300: #a5acff;
-$brand-400: #838bfb;
-$brand-500: #6366f1;
-$brand-600: #4f46e5;
-$brand-700: #4338ca;
-$brand-800: #3730a3;
-$brand-900: #312e81;
-$violet-500: #8b5cf6;
-$violet-600: #7c3aed;
+// ─── Canvas & surfaces ───────────────────────────────────────────────────────
+$canvas: #06070b;
+$canvas-soft: #080a10;
+$surface-1: #0b0d13; // cards, panels
+$surface-2: #0f121a; // inputs, raised rows
+$surface-3: #141822; // hover, wells
+$surface-4: #1a1f2b; // pressed, strong wells
 
-// Neutrals — slate-leaning for a calm, professional dashboard.
-$ink-900: #0b1220;
-$ink-800: #0f172a;
-$ink-700: #1e293b;
-$ink-600: #334155;
-$ink-500: #475569;
-$ink-400: #64748b;
-$ink-300: #94a3b8;
-$ink-200: #cbd5e1;
-$ink-100: #e2e8f0;
-$ink-50: #f1f5f9;
+// ─── Hairlines ───────────────────────────────────────────────────────────────
+$line-soft: rgba(255, 255, 255, 0.045);
+$line: rgba(255, 255, 255, 0.075);
+$line-strong: rgba(255, 255, 255, 0.14);
 
-// Surfaces
-$surface: #ffffff;
-$surface-muted: #f6f7fb;
-$surface-sunken: #eef0f7;
-$surface-inverse: $ink-900;
+// ─── Text ────────────────────────────────────────────────────────────────────
+$text-1: #f2f5fa;
+$text-2: #aab3c2;
+$text-3: #757f91;
+$text-4: #4d5666;
 
-// Borders
-$border: #e5e8f0;
-$border-strong: #d3d8e4;
-$border-inverse: rgba(255, 255, 255, 0.1);
+// ─── Signature accent — signal lime ──────────────────────────────────────────
+$accent: #c9f75b;
+$accent-strong: #d9ff85;
+$accent-deep: #a8d63c;
+$accent-ink: #090b10; // text placed on top of the accent
+$accent-soft: rgba(201, 247, 91, 0.1);
+$accent-soft-strong: rgba(201, 247, 91, 0.18);
+$accent-line: rgba(201, 247, 91, 0.34);
 
-// Text
-$text-primary: $ink-800;
-$text-secondary: $ink-500;
-$text-muted: $ink-400;
-$text-inverse: #f8fafc;
-$text-inverse-muted: #9aa6bd;
+// ─── Support hues ────────────────────────────────────────────────────────────
+$iris: #8e9bff;
+$iris-soft: rgba(142, 155, 255, 0.12);
+$sky: #7dd3fc;
+$sky-soft: rgba(125, 211, 252, 0.12);
+$mint: #6ee7b7;
+$mint-soft: rgba(110, 231, 183, 0.12);
+$amber: #f5c86b;
+$amber-soft: rgba(245, 200, 107, 0.12);
+$rose: #ff8591;
+$rose-soft: rgba(255, 133, 145, 0.12);
 
-// Feedback
-$success-50: #ecfdf5;
-$success-500: #10b981;
-$success-600: #059669;
-$warning-50: #fffbeb;
-$warning-500: #f59e0b;
-$warning-600: #d97706;
-$danger-50: #fef2f2;
-$danger-500: #ef4444;
-$danger-600: #dc2626;
-$info-50: #eff6ff;
-$info-500: #3b82f6;
-$info-600: #2563eb;
+// Semantic pairing (text on tint)
+$success-text: #8fefc4;
+$success-bg: $mint-soft;
+$success-line: rgba(110, 231, 183, 0.24);
+$warning-text: #f7d493;
+$warning-bg: $amber-soft;
+$warning-line: rgba(245, 200, 107, 0.24);
+$danger-text: #ffa2ac;
+$danger-bg: $rose-soft;
+$danger-line: rgba(255, 133, 145, 0.26);
+$info-text: #aab4ff;
+$info-bg: $iris-soft;
+$info-line: rgba(142, 155, 255, 0.24);
 
-// Typography
+// ─── Legacy aliases ──────────────────────────────────────────────────────────
+// Kept so page-level utilities and inline usages keep resolving after the
+// theme flip. New code should use the semantic tokens above.
+$surface: $surface-1;
+$surface-muted: $surface-2;
+$surface-sunken: $surface-3;
+$surface-inverse: $surface-1;
+$border: $line;
+$border-strong: $line-strong;
+$border-inverse: $line;
+$text-primary: $text-1;
+$text-secondary: $text-2;
+$text-muted: $text-3;
+$text-inverse: $text-1;
+$text-inverse-muted: $text-2;
+
+$brand-50: $accent-soft;
+$brand-100: rgba(201, 247, 91, 0.16);
+$brand-200: rgba(201, 247, 91, 0.26);
+$brand-300: $accent-line;
+$brand-400: $accent-deep;
+$brand-500: $accent;
+$brand-600: $accent;
+$brand-700: $accent-strong;
+$brand-800: $accent-strong;
+$brand-900: $accent-strong;
+$violet-500: $iris;
+$violet-600: $iris;
+
+$success-50: $success-bg;
+$success-500: $mint;
+$success-600: $success-text;
+$warning-50: $warning-bg;
+$warning-500: $amber;
+$warning-600: $warning-text;
+$danger-50: $danger-bg;
+$danger-500: $rose;
+$danger-600: $danger-text;
+$info-50: $info-bg;
+$info-500: $iris;
+$info-600: $info-text;
+
+$ink-50: rgba(255, 255, 255, 0.04);
+$ink-100: rgba(255, 255, 255, 0.07);
+$ink-200: rgba(255, 255, 255, 0.1);
+$ink-300: $text-4;
+$ink-400: $text-3;
+$ink-500: $text-2;
+$ink-600: $text-2;
+$ink-700: $text-1;
+$ink-800: $text-1;
+$ink-900: $canvas;
+
+// ─── Typography ──────────────────────────────────────────────────────────────
 $font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
   "Helvetica Neue", Arial, sans-serif;
-$font-mono: "SFMono-Regular", ui-monospace, "Cascadia Mono", "Segoe UI Mono",
-  Menlo, Consolas, monospace;
+$font-display: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+$font-mono: "JetBrains Mono", "SFMono-Regular", ui-monospace, "Cascadia Mono",
+  "Segoe UI Mono", Menlo, Consolas, monospace;
 
-$text-xs: 0.75rem; // 12
-$text-sm: 0.8125rem; // 13
+$text-xs: 0.6875rem; // 11
+$text-sm: 0.78125rem; // 12.5
 $text-base: 0.875rem; // 14
 $text-md: 0.9375rem; // 15
-$text-lg: 1.0625rem; // 17
-$text-xl: 1.25rem; // 20
-$text-2xl: 1.5rem; // 24
-$text-3xl: 1.875rem; // 30
-$text-4xl: 2.25rem; // 36
+$text-lg: 1.125rem; // 18
+$text-xl: 1.375rem; // 22
+$text-2xl: 1.75rem; // 28
+$text-3xl: 2.25rem; // 36
+$text-4xl: 3rem; // 48
+$text-5xl: 3.75rem; // 60
 
 $weight-regular: 400;
 $weight-medium: 500;
 $weight-semibold: 600;
 $weight-bold: 700;
 
-$leading-tight: 1.25;
-$leading-normal: 1.5;
-$leading-relaxed: 1.65;
+$leading-tight: 1.2;
+$leading-snug: 1.4;
+$leading-normal: 1.55;
+$leading-relaxed: 1.7;
 
-// Spacing — 4px base scale
+$tracking-tight: -0.02em;
+$tracking-display: -0.035em;
+$tracking-wide: 0.08em;
+
+// ─── Spacing — 4px base scale ────────────────────────────────────────────────
 $space-1: 0.25rem;
 $space-2: 0.5rem;
 $space-3: 0.75rem;
@@ -100,30 +163,40 @@ $space-8: 2rem;
 $space-10: 2.5rem;
 $space-12: 3rem;
 $space-16: 4rem;
+$space-20: 5rem;
+$space-24: 6rem;
 
-// Radii
-$radius-xs: 4px;
-$radius-sm: 6px;
-$radius-md: 8px;
-$radius-lg: 12px;
-$radius-xl: 16px;
+// ─── Radii ───────────────────────────────────────────────────────────────────
+$radius-xs: 5px;
+$radius-sm: 8px;
+$radius-md: 10px;
+$radius-lg: 14px;
+$radius-xl: 18px;
+$radius-2xl: 24px;
 $radius-pill: 999px;
 
-// Shadows — low, diffuse, never heavy
-$shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
-$shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.07), 0 1px 2px rgba(15, 23, 42, 0.04);
-$shadow-md: 0 4px 12px rgba(15, 23, 42, 0.07), 0 1px 3px rgba(15, 23, 42, 0.04);
-$shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12), 0 2px 8px rgba(15, 23, 42, 0.06);
-$shadow-focus: 0 0 0 3px rgba(99, 102, 241, 0.28);
+// ─── Shadows — deep, soft, never muddy ───────────────────────────────────────
+$shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.42);
+$shadow-sm:
+  0 2px 6px rgba(0, 0, 0, 0.38),
+  inset 0 1px 0 rgba(255, 255, 255, 0.03);
+$shadow-md:
+  0 14px 30px -16px rgba(0, 0, 0, 0.8),
+  0 1px 0 rgba(255, 255, 255, 0.03) inset;
+$shadow-lg:
+  0 36px 70px -28px rgba(0, 0, 0, 0.92),
+  0 2px 10px rgba(0, 0, 0, 0.45);
+$shadow-glow: 0 18px 60px -28px rgba(201, 247, 91, 0.45);
+$shadow-focus: 0 0 0 3px rgba(201, 247, 91, 0.2);
 
-// Layout
-$sidebar-width: 252px;
-$sidebar-width-collapsed: 72px;
-$topbar-height: 64px;
-$content-max: 1320px;
+// ─── Layout ──────────────────────────────────────────────────────────────────
+$sidebar-width: 264px;
+$sidebar-width-collapsed: 76px;
+$topbar-height: 68px;
+$content-max: 1380px;
 $page-gutter: $space-8;
 
-// Z-index
+// ─── Z-index ─────────────────────────────────────────────────────────────────
 $z-base: 0;
 $z-sticky: 100;
 $z-sidebar: 200;
@@ -131,14 +204,14 @@ $z-overlay: 300;
 $z-modal: 400;
 $z-toast: 500;
 
-// Transitions
+// ─── Motion ──────────────────────────────────────────────────────────────────
 $ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
 $ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 $duration-fast: 120ms;
 $duration-base: 180ms;
 $duration-slow: 280ms;
 
-// Breakpoints
+// ─── Breakpoints ─────────────────────────────────────────────────────────────
 $bp-sm: 576px;
 $bp-md: 768px;
 $bp-lg: 1024px;

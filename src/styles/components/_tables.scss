@@ -1,6 +1,9 @@
 @use "../abstracts/variables" as *;
 @use "../abstracts/mixins" as *;
 
+// ─── Data table ──────────────────────────────────────────────────────────────
+// Tables live inside `.card` and are meant to read as a continuous ledger:
+// no zebra striping, no vertical rules — only hairlines and a hover lift.
 .table-wrap {
   width: 100%;
   overflow-x: auto;
@@ -11,30 +14,41 @@
   width: 100%;
   min-width: 680px;
   font-size: $text-base;
+  border-collapse: collapse;
 
   th,
   td {
-    padding: $space-3 $space-5;
+    padding: $space-3 $space-4;
     text-align: left;
     vertical-align: middle;
+
+    &:first-child {
+      padding-left: $space-5;
+    }
+
+    &:last-child {
+      padding-right: $space-5;
+    }
   }
 
   thead th {
     position: sticky;
     top: 0;
     z-index: 1;
-    background-color: $surface-muted;
-    border-bottom: 1px solid $border;
+    height: 42px;
+    padding-block: 0;
+    background-color: $surface-2;
+    border-bottom: 1px solid $line;
     font-size: $text-xs;
     font-weight: $weight-semibold;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: $text-muted;
+    letter-spacing: $tracking-wide;
+    color: $text-3;
     white-space: nowrap;
   }
 
   tbody tr {
-    border-bottom: 1px solid $border;
+    border-bottom: 1px solid $line-soft;
     transition: background-color $duration-fast $ease-standard;
 
     &:last-child {
@@ -42,14 +56,19 @@
     }
 
     &:hover {
-      background-color: $surface-muted;
+      background-color: rgba(255, 255, 255, 0.025);
+    }
+
+    &:focus-within {
+      background-color: rgba(255, 255, 255, 0.03);
     }
   }
 
   td {
-    color: $text-primary;
+    color: $text-1;
   }
 
+  // Numbers and timestamps align in columns.
   &__cell--actions {
     text-align: right;
     white-space: nowrap;
@@ -60,7 +79,12 @@
   }
 
   &__cell--muted {
-    color: $text-muted;
+    color: $text-3;
+  }
+
+  &__cell--num {
+    font-variant-numeric: tabular-nums;
+    color: $text-2;
   }
 
   &__empty {
@@ -89,10 +113,15 @@
   flex-direction: column;
   gap: $space-2;
   padding: $space-4 $space-5;
-  border-bottom: 1px solid $border;
+  border-bottom: 1px solid $line-soft;
+  transition: background-color $duration-fast $ease-standard;
 
   &:last-child {
     border-bottom: none;
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.02);
   }
 }
 
@@ -105,7 +134,7 @@
 }
 
 .record-list__label {
-  color: $text-muted;
+  color: $text-3;
 }
 
 // ─── Pagination ──────────────────────────────────────────────────────────────
@@ -116,9 +145,10 @@
   flex-wrap: wrap;
   gap: $space-3;
   padding: $space-3 $space-5;
-  border-top: 1px solid $border;
+  border-top: 1px solid $line-soft;
+  background-color: rgba(255, 255, 255, 0.012);
   font-size: $text-sm;
-  color: $text-muted;
+  color: $text-3;
 }
 
 .pagination__controls {
@@ -131,6 +161,7 @@
   min-width: 88px;
   text-align: center;
   font-variant-numeric: tabular-nums;
+  color: $text-2;
 }
 
 // ─── Toolbar ─────────────────────────────────────────────────────────────────
@@ -139,8 +170,9 @@
   align-items: center;
   gap: $space-3;
   flex-wrap: wrap;
-  padding: $space-4 $space-5;
-  border-bottom: 1px solid $border;
+  padding: $space-3 $space-5;
+  border-bottom: 1px solid $line-soft;
+  background-color: rgba(255, 255, 255, 0.012);
 }
 
 .toolbar__spacer {

@@ -10,10 +10,12 @@ h3,
 h4,
 h5,
 h6 {
-  color: $text-primary;
+  color: $text-1;
+  font-family: $font-display;
   font-weight: $weight-semibold;
   line-height: $leading-tight;
-  letter-spacing: -0.01em;
+  letter-spacing: $tracking-tight;
+  text-wrap: balance;
 }
 
 h1 {
@@ -33,7 +35,8 @@ h4 {
 }
 
 p {
-  color: $text-secondary;
+  color: $text-2;
+  text-wrap: pretty;
 }
 
 small {
@@ -42,18 +45,30 @@ small {
 
 strong {
   font-weight: $weight-semibold;
+  color: $text-1;
+}
+
+a {
+  transition: color $duration-fast $ease-standard;
 }
 
 code,
 kbd {
   font-family: $font-mono;
-  font-size: 0.8125em;
-  background-color: $surface-sunken;
+  font-size: 0.85em;
+  background-color: $surface-3;
+  border: 1px solid $line-soft;
   border-radius: $radius-xs;
-  padding: 0.1em 0.35em;
+  padding: 0.12em 0.4em;
+  color: $text-1;
+}
+
+// Numbers should line up in every table, stat and price.
+.tabular {
+  font-variant-numeric: tabular-nums;
 }
 
 ::selection {
-  background-color: $brand-200;
-  color: $brand-900;
+  background-color: rgba(201, 247, 91, 0.26);
+  color: $text-1;
 }

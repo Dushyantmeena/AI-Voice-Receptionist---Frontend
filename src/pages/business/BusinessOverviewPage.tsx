@@ -24,7 +24,14 @@ import { ChatLinkCard } from "@/features/business/ChatLinkCard";
 import { PATHS } from "@/routes/paths";
 import { isToday } from "@/utils/date";
 import { excerpt, formatDateTimeRange, formatRelative, formatTime } from "@/utils/format";
-import type { Appointment, Conversation } from "@/types/domain";
+import type { Appointment, AppointmentStatus, Conversation } from "@/types/domain";
+
+const STATUS_MIX: { status: AppointmentStatus; label: string; modifier: string }[] = [
+  { status: "BOOKED", label: "Booked", modifier: "booked" },
+  { status: "COMPLETED", label: "Completed", modifier: "completed" },
+  { status: "CANCELLED", label: "Cancelled", modifier: "cancelled" },
+  { status: "NO_SHOW", label: "No show", modifier: "no-show" },
+];
 
 export default function BusinessOverviewPage() {
   const { user } = useAuth();
@@ -78,6 +85,12 @@ export default function BusinessOverviewPage() {
     .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
   const today = appointments.filter((item) => isToday(item.startTime) && item.status !== "CANCELLED");
 
+  const mix = STATUS_MIX.map((entry) => ({
+    ...entry,
+    count: appointments.filter((item) => item.status === entry.status).length,
+  }));
+  const mixTotal = mix.reduce((sum, entry) => sum + entry.count, 0);
+
   const activeStaff = staff.filter((member) => member.isActive);
   const activeServices = services.filter((service) => service.isActive);
 
@@ -128,12 +141,12 @@ export default function BusinessOverviewPage() {
     {
       id: "service",
       header: "Service",
-      cell: (row) => row.service?.name ?? "—",
-    },
-    {
-      id: "staff",
-      header: "Team member",
-      cell: (row) => row.staff?.name ?? "—",
+      cell: (row) => (
+        <div className="table-person__body">
+          <p className="table-person__name">{row.service?.name ?? "—"}</p>
+          <p className="table-person__meta">{row.staff?.name ?? "Unassigned"}</p>
+        </div>
+      ),
     },
     {
       id: "status",
@@ -184,6 +197,57 @@ export default function BusinessOverviewPage() {
           tone="warning"
           meta={conversations[0] ? `Latest ${formatRelative(conversations[0].createdAt)}` : "No sessions yet"}
         />
+      </div>
+
+      <div className="card card--padded section">
+        <div className="row row--between row--wrap">
+          <div>
+            <p className="card__title">Booking mix</p>
+            <p className="card__subtitle">
+              Status across the {mixTotal} most recent {mixTotal === 1 ? "booking" : "bookings"} on
+              record.
+            </p>
+          </div>
+          <Link className="btn btn--ghost btn--sm" to={PATHS.appointments}>
+            Open calendar
+          </Link>
+        </div>
+
+        {mixTotal === 0 ? (
+          <p className="muted-block section">No bookings recorded yet.</p>
+        ) : (
+          <div className="chart-bars section">
+            <div
+              className="chart-bars__track"
+              role="img"
+              aria-label={`Booking mix: ${mix
+                .map((entry) => `${entry.label} ${entry.count}`)
+                .join(", ")}`}
+            >
+              {mix
+                .filter((entry) => entry.count > 0)
+                .map((entry) => (
+                  <span
+                    key={entry.status}
+                    className={`chart-bars__segment chart-bars__segment--${entry.modifier}`}
+                    style={{ width: `${(entry.count / mixTotal) * 100}%` }}
+                  />
+                ))}
+            </div>
+            <div className="chart-legend">
+              {mix.map((entry) => (
+                <span className="chart-legend__item" key={entry.status}>
+                  <span
+                    className={`chart-legend__dot chart-legend__dot--${entry.modifier}`}
+                    aria-hidden="true"
+                  />
+                  <span className="chart-legend__label">{entry.label}</span>
+                  <span className="chart-legend__value">{entry.count}</span>
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="split section">
@@ -300,7 +364,7 @@ export default function BusinessOverviewPage() {
             ) : business ? (
               <div className="stack stack--tight section">
                 <div className="row">
-                  <UserRound size={15} aria-hidden="true" color="#64748b" />
+                  <UserRound size={15} aria-hidden="true" className="text-muted" />
                   <span className="text-sm">{business.name}</span>
                 </div>
                 <p className="text-sm text-muted">{business.industry}</p>

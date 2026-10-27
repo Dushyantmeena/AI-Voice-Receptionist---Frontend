@@ -521,7 +521,7 @@ export default function AdminBusinessDetailPage() {
                 <p className="card__title">AI conversations</p>
                 <p className="card__subtitle">The 10 most recent sessions for this tenant.</p>
               </div>
-              <MessagesSquare size={16} aria-hidden="true" color="#94a3b8" />
+              <MessagesSquare size={16} aria-hidden="true" className="text-muted" />
             </div>
 
             {conversationsQuery.error ? (

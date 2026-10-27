@@ -9,16 +9,19 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  color-scheme: dark;
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: $surface-muted;
-  color: $text-primary;
+  background-color: $canvas;
+  color: $text-1;
   font-family: $font-body;
   font-size: $text-base;
   line-height: $leading-normal;
+  font-feature-settings: "cv02", "cv03", "cv04", "ss01";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -88,6 +91,11 @@ dialog {
   padding: 0;
   border: none;
   background: none;
+}
+
+::selection {
+  background-color: rgba(201, 247, 91, 0.26);
+  color: $text-1;
 }
 
 @media (prefers-reduced-motion: reduce) {

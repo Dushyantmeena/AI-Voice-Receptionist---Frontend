@@ -7,6 +7,10 @@
   gap: $space-4;
   grid-template-columns: 1fr;
 
+  > * {
+    min-width: 0;
+  }
+
   @include up($bp-sm) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -19,8 +23,12 @@
 .split {
   display: grid;
   gap: $space-6;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   align-items: start;
+
+  > * {
+    min-width: 0;
+  }
 
   @include up($bp-lg) {
     grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
@@ -47,13 +55,13 @@
 
 .table-person__name {
   font-weight: $weight-medium;
-  color: $text-primary;
+  color: $text-1;
   @include truncate;
 }
 
 .table-person__meta {
   font-size: $text-xs;
-  color: $text-muted;
+  color: $text-3;
   @include truncate;
 }
 
@@ -66,7 +74,109 @@
 
 .table-timestamp__range {
   font-size: $text-xs;
-  color: $text-muted;
+  color: $text-3;
+}
+
+// ─── Segmented distribution chart ───────────────────────────────────────────
+// Built from real appointment statuses; no synthetic series.
+.chart-bars {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.chart-bars__track {
+  display: flex;
+  gap: 3px;
+  height: 10px;
+  border-radius: $radius-pill;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chart-bars__segment {
+  min-width: 2px;
+  height: 100%;
+  border-radius: $radius-pill;
+  transition: opacity $duration-fast $ease-standard;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &--booked {
+    background-color: $accent;
+  }
+
+  &--completed {
+    background-color: $mint;
+  }
+
+  &--cancelled {
+    background-color: $rose;
+  }
+
+  &--no-show {
+    background-color: $amber;
+  }
+}
+
+.chart-legend {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $space-2 $space-4;
+
+  @include up($bp-sm) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.chart-legend__item {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  min-width: 0;
+  font-size: $text-xs;
+  color: $text-3;
+}
+
+.chart-legend__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  flex-shrink: 0;
+
+  &--booked {
+    background-color: $accent;
+  }
+
+  &--completed {
+    background-color: $mint;
+  }
+
+  &--cancelled {
+    background-color: $rose;
+  }
+
+  &--no-show {
+    background-color: $amber;
+  }
+}
+
+.chart-legend__label {
+  @include truncate;
+}
+
+.chart-legend__value {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  font-weight: $weight-semibold;
+  color: $text-1;
+}
+
+.chart-caption {
+  font-size: $text-xs;
+  color: $text-4;
 }
 
 // ─── Choice list (checkbox groups) ──────────────────────────────────────────
@@ -75,9 +185,9 @@
   gap: $space-2;
   margin-top: $space-3;
   padding: $space-3;
-  border: 1px solid $border;
+  border: 1px solid $line;
   border-radius: $radius-md;
-  background-color: $surface-muted;
+  background-color: $surface-2;
 
   @include up($bp-md) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -101,16 +211,17 @@
   width: 34px;
   height: 34px;
   border-radius: $radius-md;
-  background-color: $brand-50;
-  color: $brand-600;
+  background-color: $accent-soft;
+  border: 1px solid $accent-line;
+  color: $accent;
   flex-shrink: 0;
 }
 
 .chat-link__value {
   padding: $space-2 $space-3;
-  border: 1px solid $border;
+  border: 1px solid $line;
   border-radius: $radius-md;
-  background-color: $surface-sunken;
+  background-color: $surface-3;
   min-width: 0;
 }
 
@@ -118,7 +229,8 @@
   display: block;
   font-family: $font-mono;
   font-size: $text-xs;
-  color: $ink-600;
+  color: $text-2;
+  overflow-wrap: anywhere;
 }
 
 .chat-link__actions {
@@ -130,7 +242,7 @@
 .chat-link__note {
   font-size: $text-xs;
   line-height: $leading-relaxed;
-  color: $text-muted;
+  color: $text-3;
 }
 
 // ─── Conversation detail ────────────────────────────────────────────────────
@@ -138,9 +250,9 @@
   display: grid;
   gap: $space-3;
   padding: $space-4;
-  border: 1px solid $border;
+  border: 1px solid $line;
   border-radius: $radius-md;
-  background-color: $surface-muted;
+  background-color: $surface-2;
 
   @include up($bp-md) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -160,22 +272,20 @@
   width: 28px;
   height: 28px;
   border-radius: $radius-sm;
-  background-color: $surface;
-  border: 1px solid $border;
-  color: $ink-500;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid $line;
+  color: $text-3;
   flex-shrink: 0;
 }
 
 .conversation-meta__label {
-  font-size: $text-xs;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: $text-muted;
+  @include eyebrow;
 }
 
 .conversation-meta__value {
+  margin-top: 2px;
   font-size: $text-sm;
-  color: $text-primary;
+  color: $text-1;
   overflow-wrap: anywhere;
 }
 
@@ -190,38 +300,39 @@
   max-height: 420px;
   overflow-y: auto;
   padding: $space-4;
-  border: 1px solid $border;
+  border: 1px solid $line;
   border-radius: $radius-md;
-  background-color: $surface-muted;
+  background-color: $surface-2;
   @include thin-scrollbar;
 }
 
 .transcript-reply {
   margin-top: $space-3;
   padding: $space-4;
-  border: 1px solid $border;
-  border-left: 3px solid $brand-500;
+  border: 1px solid $line;
+  border-left: 2px solid $accent;
   border-radius: $radius-md;
-  background-color: $surface;
+  background-color: $surface-1;
   font-size: $text-sm;
   line-height: $leading-relaxed;
-  color: $text-secondary;
+  color: $text-2;
   white-space: pre-wrap;
 }
 
 // ─── Weekly schedule editor (staff self-service) ────────────────────────────
 .schedule-editor {
-  border: 1px solid $border;
+  border: 1px solid $line;
   border-radius: $radius-lg;
   overflow: hidden;
-  background-color: $surface;
+  background-color: $surface-2;
+  margin-top: $space-4;
 }
 
 .schedule-row {
   display: grid;
   gap: $space-3;
   padding: $space-4;
-  border-bottom: 1px solid $border;
+  border-bottom: 1px solid $line-soft;
 
   &:last-child {
     border-bottom: none;
@@ -239,10 +350,11 @@
   gap: $space-2;
   font-size: $text-sm;
   font-weight: $weight-semibold;
-  color: $text-primary;
+  color: $text-1;
 
-  svg {
-    color: $ink-400;
+  svg,
+  .icon {
+    color: $text-4;
   }
 }
 
@@ -255,7 +367,7 @@
 
 .schedule-row__closed {
   font-size: $text-sm;
-  color: $text-muted;
+  color: $text-3;
 }
 
 .schedule-slot {
@@ -263,9 +375,9 @@
   align-items: center;
   gap: $space-1;
   padding: $space-1;
-  border: 1px solid $border;
+  border: 1px solid $line;
   border-radius: $radius-md;
-  background-color: $surface-muted;
+  background-color: $surface-3;
 }
 
 .schedule-slot__time {
@@ -273,11 +385,11 @@
   min-height: 32px;
   padding: $space-1 $space-2;
   font-size: $text-sm;
-  background-color: $surface;
+  background-color: $surface-1;
 }
 
 .schedule-slot__dash {
-  color: $text-muted;
+  color: $text-4;
 }
 
 .schedule-slot__remove {
@@ -286,11 +398,11 @@
   width: 26px;
   height: 26px;
   border-radius: $radius-sm;
-  color: $ink-400;
+  color: $text-3;
 
   &:hover {
-    background-color: $danger-50;
-    color: $danger-600;
+    background-color: $danger-bg;
+    color: $danger-text;
   }
 
   @include focus-visible;
@@ -300,7 +412,7 @@
 .availability-summary {
   display: flex;
   flex-direction: column;
-  gap: $space-1;
+  gap: $space-2;
 }
 
 .availability-summary__row {
@@ -308,17 +420,25 @@
   align-items: baseline;
   justify-content: space-between;
   gap: $space-3;
+  padding-bottom: $space-2;
+  border-bottom: 1px solid $line-soft;
   font-size: $text-sm;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
 }
 
 .availability-summary__day {
-  color: $text-muted;
+  color: $text-3;
   min-width: 84px;
 }
 
 .availability-summary__ranges {
-  color: $text-primary;
+  color: $text-1;
   text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 // ─── Admin availability panel ───────────────────────────────────────────────
@@ -342,28 +462,24 @@
 
 .availability-day {
   padding: $space-4;
-  border: 1px solid $border;
+  border: 1px solid $line;
   border-radius: $radius-md;
-  background-color: $surface;
+  background-color: $surface-2;
 
   &--empty {
-    background-color: $surface-muted;
+    background-color: rgba(255, 255, 255, 0.015);
     border-style: dashed;
   }
 }
 
 .availability-day__name {
-  font-size: $text-xs;
-  font-weight: $weight-semibold;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: $text-muted;
+  @include eyebrow;
 }
 
 .availability-day__closed {
   margin-top: $space-2;
   font-size: $text-sm;
-  color: $ink-400;
+  color: $text-4;
 }
 
 .availability-day__list {
@@ -379,10 +495,11 @@
   justify-content: space-between;
   gap: $space-2;
   padding: $space-1 $space-2;
+  border: 1px solid $accent-line;
   border-radius: $radius-sm;
-  background-color: $brand-50;
+  background-color: $accent-soft;
   font-size: $text-sm;
-  color: $brand-700;
+  color: $accent;
   font-variant-numeric: tabular-nums;
 }
 
@@ -392,11 +509,11 @@
   width: 22px;
   height: 22px;
   border-radius: $radius-xs;
-  color: $brand-600;
+  color: $accent;
 
   &:hover {
-    background-color: $danger-50;
-    color: $danger-600;
+    background-color: $danger-bg;
+    color: $danger-text;
   }
 
   @include focus-visible;
@@ -429,11 +546,11 @@
 
 .muted-block {
   padding: $space-4;
-  border: 1px dashed $border-strong;
+  border: 1px dashed $line-strong;
   border-radius: $radius-md;
-  background-color: $surface-muted;
+  background-color: rgba(255, 255, 255, 0.015);
   font-size: $text-sm;
-  color: $text-muted;
+  color: $text-3;
 }
 
 .detail-actions {

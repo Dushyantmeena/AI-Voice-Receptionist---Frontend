@@ -1,13 +1,15 @@
 @use "../abstracts/variables" as *;
 @use "../abstracts/mixins" as *;
 
+// ─── Split auth layout ───────────────────────────────────────────────────────
 .auth-layout {
   display: grid;
   min-height: 100vh;
   grid-template-columns: 1fr;
+  background-color: $canvas;
 
   @include up($bp-lg) {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   }
 }
 
@@ -18,67 +20,100 @@
   flex-direction: column;
   justify-content: space-between;
   padding: $space-10;
-  background-color: $surface-inverse;
-  color: $text-inverse;
+  border-right: 1px solid $line;
+  background-color: $canvas-soft;
+  color: $text-1;
   overflow: hidden;
 
   @include up($bp-lg) {
     display: flex;
+    padding: $space-12;
   }
 
+  // Dot lattice, masked to the upper half.
   &::before {
     content: "";
     position: absolute;
-    top: -160px;
-    right: -120px;
-    width: 420px;
-    height: 420px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.38), transparent 68%);
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 26px 26px;
+    mask-image: radial-gradient(80% 60% at 20% 10%, #000 10%, transparent 80%);
     pointer-events: none;
   }
 
+  // One warm light source, top-right.
   &::after {
     content: "";
     position: absolute;
-    bottom: -180px;
-    left: -140px;
-    width: 460px;
-    height: 460px;
+    top: -220px;
+    right: -180px;
+    width: 560px;
+    height: 560px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(139, 92, 246, 0.24), transparent 70%);
+    background: radial-gradient(circle, rgba(201, 247, 91, 0.14), transparent 66%);
     pointer-events: none;
   }
+}
+
+.auth-layout__brand {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.auth-layout__brand-mark {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: $radius-md;
+  background-color: $accent;
+  color: $accent-ink;
+  box-shadow: 0 10px 26px -12px rgba(201, 247, 91, 0.85);
+  flex-shrink: 0;
+}
+
+.auth-layout__brand-name {
+  font-size: $text-md;
+  font-weight: $weight-semibold;
+  letter-spacing: $tracking-tight;
+  color: $text-1;
+}
+
+.auth-layout__brand-meta {
+  font-size: $text-xs;
+  color: $text-3;
 }
 
 .auth-layout__aside-content {
   position: relative;
   z-index: 1;
-  max-width: 42ch;
-}
-
-.auth-layout__brand {
-  display: flex;
-  align-items: center;
-  gap: $space-3;
-  position: relative;
-  z-index: 1;
+  max-width: 30rem;
 }
 
 .auth-layout__headline {
-  margin-top: $space-8;
-  font-size: $text-4xl;
+  margin-top: $space-10;
+  font-family: $font-display;
+  font-size: clamp(2rem, 3vw, 2.85rem);
   font-weight: $weight-semibold;
-  line-height: 1.15;
-  letter-spacing: -0.03em;
-  color: #fff;
+  line-height: 1.12;
+  letter-spacing: $tracking-display;
+  color: $text-1;
+  text-wrap: balance;
+
+  em {
+    font-style: normal;
+    color: $accent;
+  }
 }
 
 .auth-layout__lede {
   margin-top: $space-4;
   font-size: $text-md;
   line-height: $leading-relaxed;
-  color: $text-inverse-muted;
+  color: $text-2;
 }
 
 .auth-layout__points {
@@ -86,6 +121,8 @@
   flex-direction: column;
   gap: $space-4;
   margin-top: $space-10;
+  padding-top: $space-6;
+  border-top: 1px solid $line-soft;
 }
 
 .auth-layout__point {
@@ -96,24 +133,26 @@
   &-icon {
     display: grid;
     place-items: center;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border-radius: $radius-md;
-    background-color: rgba(255, 255, 255, 0.07);
-    color: $brand-300;
+    background-color: rgba(255, 255, 255, 0.045);
+    border: 1px solid $line;
+    color: $accent;
     flex-shrink: 0;
   }
 
   &-title {
-    font-size: $text-base;
-    font-weight: $weight-medium;
-    color: #fff;
+    font-size: $text-sm;
+    font-weight: $weight-semibold;
+    color: $text-1;
   }
 
   &-text {
+    margin-top: 2px;
     font-size: $text-sm;
-    color: $text-inverse-muted;
     line-height: $leading-relaxed;
+    color: $text-3;
   }
 }
 
@@ -121,34 +160,59 @@
   position: relative;
   z-index: 1;
   font-size: $text-xs;
-  color: #64748b;
+  letter-spacing: 0.02em;
+  color: $text-4;
 }
 
 // ─── Form panel ──────────────────────────────────────────────────────────────
 .auth-layout__main {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: $space-8 $space-4;
+  padding: $space-8 $space-5;
+
+  // A very faint glow keeps the canvas from reading as flat black.
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: -240px;
+    left: -160px;
+    width: 520px;
+    height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(142, 155, 255, 0.07), transparent 70%);
+    pointer-events: none;
+  }
 
   @include up($bp-md) {
-    padding: $space-10;
+    padding: $space-12 $space-10;
   }
 }
 
 .auth-card {
+  @include panel($radius-2xl);
+  position: relative;
+  z-index: 1;
   width: 100%;
-  max-width: 400px;
+  max-width: 428px;
   margin-inline: auto;
+  padding: $space-6;
+
+  @include up($bp-md) {
+    padding: $space-8;
+  }
 }
 
 .auth-card__mobile-brand {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: $space-2;
-  margin-bottom: $space-6;
+  gap: $space-3;
+  margin-bottom: $space-8;
+  font-size: $text-md;
   font-weight: $weight-semibold;
-  color: $text-primary;
+  letter-spacing: $tracking-tight;
+  color: $text-1;
 
   @include up($bp-lg) {
     display: none;
@@ -156,16 +220,20 @@
 }
 
 .auth-card__title {
+  font-family: $font-display;
   font-size: $text-2xl;
   font-weight: $weight-semibold;
-  letter-spacing: -0.02em;
+  line-height: $leading-tight;
+  letter-spacing: $tracking-display;
+  color: $text-1;
 }
 
 .auth-card__subtitle {
   margin-top: $space-2;
   margin-bottom: $space-6;
-  font-size: $text-base;
-  color: $text-muted;
+  font-size: $text-sm;
+  line-height: $leading-normal;
+  color: $text-3;
 }
 
 .auth-card__form {
@@ -177,47 +245,94 @@
 .auth-card__hint {
   margin-top: $space-6;
   padding: $space-3 $space-4;
-  border: 1px dashed $border-strong;
+  border: 1px solid $line;
   border-radius: $radius-md;
+  background-color: rgba(255, 255, 255, 0.02);
   font-size: $text-xs;
-  color: $text-muted;
   line-height: $leading-relaxed;
+  color: $text-3;
+}
+
+.auth-card__foot {
+  margin-top: $space-5;
+  padding-top: $space-5;
+  border-top: 1px solid $line-soft;
+  font-size: $text-sm;
+  text-align: center;
+  color: $text-3;
 }
 
 // ─── Simple centred page (401 / 404) ─────────────────────────────────────────
 .status-page {
+  position: relative;
   display: grid;
   place-items: center;
   min-height: 100vh;
   padding: $space-6;
-  background-color: $surface-muted;
+  background-color: $canvas;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(60% 50% at 50% 40%, #000 10%, transparent 80%);
+    pointer-events: none;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: -260px;
+    left: 50%;
+    width: 620px;
+    height: 620px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201, 247, 91, 0.12), transparent 66%);
+    pointer-events: none;
+  }
 }
 
 .status-page__inner {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  max-width: 460px;
+  max-width: 480px;
+  padding: $space-8 $space-6;
+  border: 1px solid $line;
+  border-radius: $radius-2xl;
+  background-color: $surface-1;
+  box-shadow: $shadow-lg;
   text-align: center;
 }
 
 .status-page__code {
-  font-size: 4rem;
+  font-family: $font-mono;
+  font-size: 3.25rem;
   font-weight: $weight-bold;
   letter-spacing: -0.04em;
   line-height: 1;
-  color: $brand-600;
+  color: $accent;
 }
 
 .status-page__title {
-  margin-top: $space-3;
+  margin-top: $space-4;
+  font-family: $font-display;
   font-size: $text-xl;
   font-weight: $weight-semibold;
+  letter-spacing: $tracking-tight;
+  color: $text-1;
 }
 
 .status-page__text {
   margin-top: $space-2;
   margin-bottom: $space-6;
-  font-size: $text-base;
-  color: $text-muted;
+  font-size: $text-sm;
+  line-height: $leading-relaxed;
+  color: $text-3;
 }
 
 .status-page__actions {

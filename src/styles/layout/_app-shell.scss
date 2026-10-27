@@ -1,10 +1,40 @@
 @use "../abstracts/variables" as *;
 @use "../abstracts/mixins" as *;
 
+// Shared wrapper for raw SVG assets and inline icons.
+.icon {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  line-height: 0;
+  color: inherit;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+  }
+}
+
 .app-shell {
+  position: relative;
   display: flex;
   min-height: 100vh;
-  background-color: $surface-muted;
+  background-color: $canvas;
+
+  // One soft light source, anchored to the top-left of the workspace.
+  &::before {
+    content: "";
+    position: fixed;
+    top: -320px;
+    left: 120px;
+    width: 720px;
+    height: 720px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201, 247, 91, 0.055), transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
 }
 
 // ─── Sidebar ─────────────────────────────────────────────────────────────────
@@ -16,8 +46,8 @@
   display: flex;
   flex-direction: column;
   width: $sidebar-width;
-  background-color: $surface-inverse;
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  background-color: $canvas-soft;
+  border-right: 1px solid $line-soft;
   transform: translateX(-100%);
   transition: transform $duration-slow $ease-out;
   @include thin-scrollbar;
@@ -36,132 +66,252 @@
   align-items: center;
   gap: $space-3;
   height: $topbar-height;
-  padding: 0 $space-5;
+  padding: 0 $space-4;
   flex-shrink: 0;
 }
 
 .sidebar__logo {
   display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   border-radius: $radius-md;
-  background: linear-gradient(135deg, $brand-500, $violet-600);
-  color: #fff;
+  background-color: $accent;
+  color: $accent-ink;
   flex-shrink: 0;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.4),
+    0 10px 22px -12px rgba(201, 247, 91, 0.7);
 }
 
 .sidebar__brand-text {
   display: flex;
   flex-direction: column;
+  gap: 2px;
   min-width: 0;
 }
 
 .sidebar__brand-name {
   font-size: $text-base;
   font-weight: $weight-semibold;
-  color: $text-inverse;
+  color: $text-1;
   letter-spacing: -0.01em;
   @include truncate;
 }
 
 .sidebar__brand-meta {
-  font-size: 11px;
-  color: $text-inverse-muted;
+  font-size: 10px;
+  font-weight: $weight-semibold;
+  color: $text-4;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
+}
+
+.sidebar__close {
+  display: grid;
+  place-items: center;
+  margin-left: auto;
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-sm;
+  color: $text-3;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    color: $text-1;
+  }
+
+  @include up($bp-lg) {
+    display: none;
+  }
+}
+
+// Workspace / scope switcher
+.sidebar__scope {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  margin: 0 $space-3 $space-2;
+  padding: $space-3;
+  border: 1px solid $line-soft;
+  border-radius: $radius-lg;
+  background-color: $surface-2;
+  min-width: 0;
+}
+
+.sidebar__scope-mark {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: $radius-sm;
+  background-color: $accent-soft;
+  border: 1px solid $accent-line;
+  color: $accent;
+  font-size: 10px;
+  font-weight: $weight-bold;
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+}
+
+.sidebar__scope-body {
+  min-width: 0;
+}
+
+.sidebar__scope-label {
+  @include eyebrow;
+  font-size: 9.5px;
+  color: $text-4;
+}
+
+.sidebar__scope-name {
+  margin-top: 2px;
+  font-size: $text-base;
+  font-weight: $weight-medium;
+  color: $text-1;
+  @include truncate;
 }
 
 .sidebar__nav {
   flex: 1;
-  padding: $space-3;
+  padding: $space-2 $space-3 $space-4;
   overflow-y: auto;
 }
 
 .sidebar__section {
-  margin-bottom: $space-5;
+  margin-bottom: $space-4;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .sidebar__section-label {
   padding: $space-2 $space-3;
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: $weight-semibold;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #64748b;
+  letter-spacing: 0.14em;
+  color: $text-4;
 }
 
 .sidebar__link {
+  position: relative;
   display: flex;
   align-items: center;
   gap: $space-3;
-  padding: $space-2 $space-3;
+  padding: 9px $space-3;
   margin-bottom: 2px;
   border-radius: $radius-md;
   font-size: $text-base;
   font-weight: $weight-medium;
-  color: #a8b3c7;
+  color: $text-2;
   transition:
     background-color $duration-fast $ease-standard,
     color $duration-fast $ease-standard;
 
   svg {
     flex-shrink: 0;
-    color: #7c8aa3;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: -1px;
+    top: 50%;
+    width: 2px;
+    height: 0;
+    border-radius: $radius-pill;
+    background-color: $accent;
+    transform: translateY(-50%);
+    transition: height $duration-base $ease-out;
   }
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.06);
-    color: $text-inverse;
-
-    svg {
-      color: #c3ccdc;
-    }
+    background-color: rgba(255, 255, 255, 0.045);
+    color: $text-1;
   }
 
   &:focus-visible {
-    outline: 2px solid $brand-400;
+    outline: 2px solid $accent-line;
     outline-offset: -2px;
   }
 
   &--active {
-    background-color: rgba(99, 102, 241, 0.16);
-    color: #fff;
+    background-color: $accent-soft;
+    color: $accent;
 
-    svg {
-      color: $brand-300;
+    &::before {
+      height: 16px;
     }
 
     &:hover {
-      background-color: rgba(99, 102, 241, 0.22);
+      background-color: $accent-soft-strong;
+      color: $accent;
     }
   }
 }
 
+.sidebar__link-icon {
+  opacity: 0.9;
+}
+
+// Footer account block
 .sidebar__footer {
+  flex-shrink: 0;
   padding: $space-3;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  border-top: 1px solid $line-soft;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
 }
 
-.sidebar__tenant {
-  padding: $space-3;
+.sidebar__account {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-2;
   border-radius: $radius-md;
-  background-color: rgba(255, 255, 255, 0.04);
+  min-width: 0;
 }
 
-.sidebar__tenant-label {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #64748b;
+.sidebar__account-body {
+  min-width: 0;
 }
 
-.sidebar__tenant-name {
-  margin-top: 2px;
+.sidebar__account-name {
+  font-size: $text-base;
+  font-weight: $weight-medium;
+  color: $text-1;
+  @include truncate;
+}
+
+.sidebar__account-role {
+  font-size: $text-xs;
+  color: $text-4;
+  @include truncate;
+}
+
+.sidebar__logout {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  width: 100%;
+  padding: 8px $space-3;
+  border-radius: $radius-md;
   font-size: $text-sm;
   font-weight: $weight-medium;
-  color: $text-inverse;
-  @include truncate;
+  color: $text-3;
+  transition:
+    background-color $duration-fast $ease-standard,
+    color $duration-fast $ease-standard;
+
+  &:hover {
+    background-color: $rose-soft;
+    color: $danger-text;
+  }
+
+  @include focus-visible;
 }
 
 // ─── Backdrop (mobile) ───────────────────────────────────────────────────────
@@ -169,7 +319,8 @@
   position: fixed;
   inset: 0;
   z-index: $z-overlay;
-  background-color: rgba(11, 18, 32, 0.45);
+  background-color: rgba(3, 4, 8, 0.66);
+  backdrop-filter: blur(3px);
   animation: fade-in $duration-fast $ease-standard;
 
   @include up($bp-lg) {
@@ -179,6 +330,8 @@
 
 // ─── Main column ─────────────────────────────────────────────────────────────
 .app-shell__main {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -199,9 +352,8 @@
   gap: $space-3;
   height: $topbar-height;
   padding: 0 $space-4;
-  background-color: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid $border;
+  @include glass-bar;
+  border-bottom: 1px solid $line-soft;
 
   @include up($bp-md) {
     padding: 0 $space-6;
@@ -214,11 +366,12 @@
   width: 36px;
   height: 36px;
   border-radius: $radius-md;
-  color: $ink-600;
+  color: $text-2;
   flex-shrink: 0;
 
   &:hover {
-    background-color: $ink-50;
+    background-color: rgba(255, 255, 255, 0.06);
+    color: $text-1;
   }
 
   @include up($bp-lg) {
@@ -232,18 +385,34 @@
   gap: $space-2;
   min-width: 0;
   font-size: $text-sm;
-  color: $text-muted;
+  color: $text-3;
+}
 
-  &-current {
-    font-weight: $weight-medium;
-    color: $text-primary;
-    @include truncate;
-  }
+.topbar__breadcrumb-root {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 10px;
+  font-weight: $weight-semibold;
+  color: $text-4;
 
-  svg {
-    color: $ink-300;
-    flex-shrink: 0;
+  @include down($bp-sm) {
+    display: none;
   }
+}
+
+.topbar__breadcrumb-sep {
+  color: $text-4;
+
+  @include down($bp-sm) {
+    display: none;
+  }
+}
+
+.topbar__breadcrumb-current {
+  font-size: $text-base;
+  font-weight: $weight-medium;
+  color: $text-1;
+  @include truncate;
 }
 
 .topbar__spacer {
@@ -254,6 +423,28 @@
   display: flex;
   align-items: center;
   gap: $space-2;
+}
+
+.topbar__public {
+  display: none;
+  align-items: center;
+  gap: $space-2;
+  padding: 7px $space-3;
+  border-radius: $radius-md;
+  font-size: $text-sm;
+  color: $text-3;
+  transition:
+    background-color $duration-fast $ease-standard,
+    color $duration-fast $ease-standard;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.045);
+    color: $text-1;
+  }
+
+  @include up($bp-md) {
+    display: inline-flex;
+  }
 }
 
 .topbar__role {
@@ -273,12 +464,12 @@
   display: flex;
   align-items: center;
   gap: $space-2;
-  padding: $space-1 $space-2;
+  padding: 4px $space-2;
   border-radius: $radius-md;
   transition: background-color $duration-fast $ease-standard;
 
   &:hover {
-    background-color: $ink-50;
+    background-color: rgba(255, 255, 255, 0.05);
   }
 
   @include focus-visible;
@@ -298,14 +489,14 @@
 .user-menu__name {
   font-size: $text-sm;
   font-weight: $weight-medium;
-  color: $text-primary;
+  color: $text-1;
   max-width: 150px;
   @include truncate;
 }
 
 .user-menu__role {
-  font-size: 11px;
-  color: $text-muted;
+  font-size: 10.5px;
+  color: $text-4;
 }
 
 .user-menu__panel {
@@ -313,10 +504,10 @@
   top: calc(100% + #{$space-2});
   right: 0;
   z-index: $z-overlay;
-  width: 232px;
+  width: 248px;
   padding: $space-2;
-  background-color: $surface;
-  border: 1px solid $border;
+  background-color: $surface-2;
+  border: 1px solid $line;
   border-radius: $radius-lg;
   box-shadow: $shadow-lg;
   animation: slide-up $duration-fast $ease-out;
@@ -324,13 +515,13 @@
 
 .user-menu__header {
   padding: $space-2 $space-3 $space-3;
-  border-bottom: 1px solid $border;
+  border-bottom: 1px solid $line-soft;
   margin-bottom: $space-2;
 }
 
 .user-menu__email {
   font-size: $text-xs;
-  color: $text-muted;
+  color: $text-4;
   overflow-wrap: anywhere;
 }
 
@@ -339,23 +530,23 @@
   align-items: center;
   gap: $space-2;
   width: 100%;
-  padding: $space-2 $space-3;
+  padding: 8px $space-3;
   border-radius: $radius-sm;
-  font-size: $text-base;
-  color: $ink-600;
+  font-size: $text-sm;
+  color: $text-2;
   text-align: left;
 
   &:hover {
-    background-color: $ink-50;
-    color: $ink-800;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: $text-1;
   }
 
   &--danger {
-    color: $danger-600;
+    color: $danger-text;
 
     &:hover {
-      background-color: $danger-50;
-      color: $danger-600;
+      background-color: $rose-soft;
+      color: $danger-text;
     }
   }
 
@@ -368,15 +559,15 @@
   width: 100%;
   max-width: $content-max;
   margin-inline: auto;
-  padding: $space-5 $space-4 $space-12;
+  padding: $space-6 $space-4 $space-12;
   animation: fade-in $duration-base $ease-standard;
 
   @include up($bp-md) {
-    padding: $space-6 $space-6 $space-12;
+    padding: $space-7 $space-6 $space-16;
   }
 
   @include up($bp-lg) {
-    padding: $space-8 $page-gutter $space-16;
+    padding: $space-8 $page-gutter $space-20;
   }
 }
 
@@ -384,14 +575,14 @@
   display: flex;
   flex-direction: column;
   gap: $space-3;
-  margin-bottom: $space-5;
+  margin-bottom: $space-6;
 
   @include up($bp-md) {
     flex-direction: row;
-    align-items: flex-start;
+    align-items: flex-end;
     justify-content: space-between;
     gap: $space-6;
-    margin-bottom: $space-6;
+    margin-bottom: $space-7;
   }
 }
 
@@ -400,26 +591,46 @@
 }
 
 .page-header__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  margin-bottom: $space-3;
+  padding: 4px $space-2 4px $space-3;
+  border: 1px solid $line;
+  border-radius: $radius-pill;
+  background-color: rgba(255, 255, 255, 0.02);
   font-size: $text-xs;
-  font-weight: $weight-semibold;
+  font-weight: $weight-medium;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: $brand-600;
-  margin-bottom: $space-2;
+  color: $text-3;
+
+  &::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: $accent;
+  }
 }
 
 .page-header__title {
   font-size: $text-2xl;
   font-weight: $weight-semibold;
-  letter-spacing: -0.02em;
-  color: $text-primary;
+  letter-spacing: $tracking-display;
+  color: $text-1;
+
+  @include up($bp-md) {
+    font-size: $text-3xl;
+  }
 }
 
 .page-header__description {
-  margin-top: $space-1;
-  max-width: 68ch;
+  margin-top: $space-2;
+  max-width: 70ch;
   font-size: $text-base;
-  color: $text-muted;
+  line-height: $leading-relaxed;
+  color: $text-3;
 }
 
 .page-header__actions {
@@ -444,7 +655,8 @@
 }
 
 .section__title {
-  font-size: $text-md;
+  font-size: $text-lg;
   font-weight: $weight-semibold;
-  color: $text-primary;
+  letter-spacing: $tracking-tight;
+  color: $text-1;
 }

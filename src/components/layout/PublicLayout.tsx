@@ -1,8 +1,8 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { AudioLines } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { ROLE_HOME } from "@/constants/domain";
 import { PATHS } from "@/routes/paths";
+import { Icon } from "@/components/ui/Icon";
 
 export function PublicLayout() {
   const { user, status } = useAuth();
@@ -13,8 +13,8 @@ export function PublicLayout() {
     <div className="public-shell">
       <header className="public-nav">
         <Link className="public-nav__brand" to={PATHS.home}>
-          <span className="sidebar__logo" style={{ width: 28, height: 28 }} aria-hidden="true">
-            <AudioLines size={15} />
+          <span className="public-nav__mark" aria-hidden="true">
+            <Icon name="mic" size={16} />
           </span>
           Voice Receptionist
         </Link>
@@ -47,7 +47,24 @@ export function PublicLayout() {
       </main>
 
       <footer className="landing-footer">
-        AI Voice Receptionist · Conversational booking for service businesses
+        <div className="landing-footer__inner">
+          <div className="landing-footer__brand">
+            <span className="landing-footer__mark" aria-hidden="true">
+              <Icon name="phone-call" size={14} />
+            </span>
+            <p className="landing-footer__text">
+              AI Voice Receptionist
+              <br />
+              Conversational booking for service businesses
+            </p>
+          </div>
+
+          <div className="landing-footer__meta">
+            <Link to={PATHS.login}>Staff sign in</Link>
+            <a href="#how-it-works">How it works</a>
+            <span>Platform build · 2026</span>
+          </div>
+        </div>
       </footer>
     </div>
   );

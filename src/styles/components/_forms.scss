@@ -14,16 +14,17 @@
   gap: $space-1;
   font-size: $text-sm;
   font-weight: $weight-medium;
-  color: $ink-700;
+  color: $text-2;
 }
 
 .field__required {
-  color: $danger-500;
+  color: $danger-text;
 }
 
 .field__hint {
   font-size: $text-xs;
-  color: $text-muted;
+  line-height: $leading-snug;
+  color: $text-3;
 }
 
 .field__error {
@@ -31,7 +32,7 @@
   align-items: center;
   gap: $space-1;
   font-size: $text-xs;
-  color: $danger-600;
+  color: $danger-text;
 }
 
 // ─── Controls ────────────────────────────────────────────────────────────────
@@ -39,48 +40,50 @@
 .select,
 .textarea {
   width: 100%;
-  min-height: 38px;
-  padding: $space-2 $space-3;
-  background-color: $surface;
-  border: 1px solid $border-strong;
+  min-height: 40px;
+  padding: 9px $space-3;
+  background-color: $surface-2;
+  border: 1px solid $line-strong;
   border-radius: $radius-md;
   font-size: $text-base;
-  color: $text-primary;
+  color: $text-1;
   transition:
     border-color $duration-fast $ease-standard,
-    box-shadow $duration-fast $ease-standard;
+    box-shadow $duration-fast $ease-standard,
+    background-color $duration-fast $ease-standard;
 
   &::placeholder {
-    color: $ink-300;
+    color: $text-4;
   }
 
   &:hover:not(:disabled) {
-    border-color: $ink-300;
+    border-color: rgba(255, 255, 255, 0.2);
   }
 
   &:focus {
     outline: none;
-    border-color: $brand-500;
+    border-color: $accent-line;
+    background-color: $surface-3;
     box-shadow: $shadow-focus;
   }
 
   &:disabled {
-    background-color: $ink-50;
-    color: $text-muted;
+    background-color: rgba(255, 255, 255, 0.02);
+    color: $text-4;
     cursor: not-allowed;
   }
 
   &[aria-invalid="true"] {
-    border-color: $danger-500;
+    border-color: $danger-line;
 
     &:focus {
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+      box-shadow: 0 0 0 3px rgba(255, 133, 145, 0.16);
     }
   }
 }
 
 .textarea {
-  min-height: 88px;
+  min-height: 92px;
   resize: vertical;
   line-height: $leading-relaxed;
 }
@@ -88,10 +91,15 @@
 .select {
   appearance: none;
   padding-right: $space-8;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23757f91' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right $space-3 center;
   cursor: pointer;
+
+  option {
+    background-color: $surface-2;
+    color: $text-1;
+  }
 }
 
 // ─── Checkbox / switch ───────────────────────────────────────────────────────
@@ -100,13 +108,13 @@
   align-items: center;
   gap: $space-2;
   font-size: $text-base;
-  color: $ink-700;
+  color: $text-2;
   cursor: pointer;
 
   input {
     width: 16px;
     height: 16px;
-    accent-color: $brand-600;
+    accent-color: $accent;
     cursor: pointer;
   }
 }
@@ -117,7 +125,7 @@
   gap: $space-3;
   cursor: pointer;
   font-size: $text-base;
-  color: $ink-700;
+  color: $text-2;
 
   input {
     @include visually-hidden;
@@ -129,7 +137,7 @@
   width: 38px;
   height: 22px;
   border-radius: $radius-pill;
-  background-color: $ink-200;
+  background-color: rgba(255, 255, 255, 0.12);
   transition: background-color $duration-base $ease-standard;
   flex-shrink: 0;
 
@@ -141,17 +149,18 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background-color: #fff;
+    background-color: #f4f6fb;
     box-shadow: $shadow-xs;
     transition: transform $duration-base $ease-standard;
   }
 }
 
 .switch input:checked + .switch__track {
-  background-color: $brand-600;
+  background-color: $accent;
 
   &::after {
     transform: translateX(16px);
+    background-color: $accent-ink;
   }
 }
 
@@ -192,7 +201,7 @@
   svg {
     position: absolute;
     left: $space-3;
-    color: $ink-400;
+    color: $text-4;
     pointer-events: none;
   }
 

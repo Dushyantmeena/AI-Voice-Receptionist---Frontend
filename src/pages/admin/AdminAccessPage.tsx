@@ -225,7 +225,7 @@ export default function AdminAccessPage() {
               <div className="stack stack--tight">
                 {entry.capabilities.map((capability) => (
                   <div className="row" key={capability}>
-                    <Check size={14} aria-hidden="true" color="#16a34a" />
+                    <Check size={14} aria-hidden="true" className="text-success" />
                     <span className="text-sm text-secondary">{capability}</span>
                   </div>
                 ))}
@@ -432,7 +432,7 @@ export default function AdminAccessPage() {
 
           <div className="card card--padded">
             <div className="row">
-              <Users size={16} aria-hidden="true" color="#64748b" />
+              <Users size={16} aria-hidden="true" className="text-muted" />
               <p className="card__title">
                 {selectedBusiness ? `${selectedBusiness.name} roster` : "Tenant roster"}
               </p>

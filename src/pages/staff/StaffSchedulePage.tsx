@@ -127,7 +127,7 @@ export default function StaffSchedulePage() {
 
             <div className="card card--padded">
               <div className="row">
-                <Info size={16} aria-hidden="true" color="#64748b" />
+                <Info size={16} aria-hidden="true" className="text-muted" />
                 <p className="card__title">How hours are used</p>
               </div>
               <div className="stack stack--tight section">
